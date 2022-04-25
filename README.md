@@ -1,4 +1,4 @@
-# Voronoi-Diagram-of-Spheres
+# 3D Additively Weighted Voronoi Diagram
 A c++ algorithm to compute the Voronoi diagram of spheres from a molecular structure.
 
 The Voronoi diagram of spheres (sometimes called the additively weighted Voronoi diagram, the Voronoi diagram of balls, or the Apollonius diagram) partitions space around a set of spheres into cells such that each cell contains all the space closer to the surface of a given sphere than any other sphere. It has been postulated that this diagram is better suited to analyze molecular structures than the power diagram. This algorithm is based on the algorithm presented in [[1]](https://doi.org/10.1080/16864360.2016.1273576) and [[2]](https://doi.org/10.1016/j.cag.2019.06.007), though many parts have been adapted or implemented differently.
@@ -46,7 +46,7 @@ make
 ## Usage
 
 ```bash
-./NAME FILENAME SUBDIVISIONS [OPTIONS]
+./vdos FILENAME SUBDIVISIONS [OPTIONS]
 ```
 
 FILENAME is the filename of the pdb you wish to analyze.

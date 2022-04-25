@@ -1,6 +1,4 @@
 #include "power.h"
-#include "parser.h"
-#include "typedefs.h"
 
 #include <CGAL/Dynamic_property_map.h>
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
@@ -8,6 +6,7 @@
 #include <CGAL/IO/PLY.h>
 #include <CGAL/Kernel/global_functions_3.h>
 #include <CGAL/Lazy.h>
+#include <CGAL/Polygon_mesh_processing/corefinement.h>
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Polyhedron_traits_3.h>
 #include <CGAL/Regular_triangulation_3.h>
@@ -39,6 +38,8 @@
 
 #include "/home/e5-2690/builds/overlap/overlap.hpp"
 #include "ESBTL/occupancy_handlers.h"
+#include "parser.h"
+#include "typedefs.h"
 
 // namespace ESBTL
 //{
@@ -101,10 +102,9 @@ template <class Triangulation_3, class FG>
 typename boost::graph_traits<FG>::vertex_descriptor
 link_to_fg_with_color (const Triangulation_3 &t,
                        typename Triangulation_3::Vertex_handle vh, FG &fg,
-                       const Atom * atom,
-                       const std::string &fname, bool no_infinite_faces = true)
+                       const Atom *atom, const std::string &fname,
+                       bool no_infinite_faces = true)
 {
-
   typedef typename Triangulation_3::Cell_handle Cell_handle;
   typedef typename Triangulation_3::Vertex_handle Vertex_handle;
   typedef
@@ -165,9 +165,10 @@ link_to_fg_with_color (const Triangulation_3 &t,
         }
       if (!infinite_face)
         {
-
-          std::set<const Atom *> intersect{rvertex_map[face[0]]->info ().cbegin (),
-          rvertex_map[face[0]]->info ().cend ()};
+          std::set<const Atom *> intersect{
+            rvertex_map[face[0]]->info ().cbegin (),
+            rvertex_map[face[0]]->info ().cend ()
+          };
           for (const auto &v : face)
             {
               std::set<const Atom *> tmp;
@@ -179,8 +180,8 @@ link_to_fg_with_color (const Triangulation_3 &t,
               intersect = tmp;
             }
 
-          intersect.erase(atom);
-          assert(!intersect.empty());
+          intersect.erase (atom);
+          assert (!intersect.empty ());
           auto color = G_cmap.find ((*intersect.cbegin ())->element ());
           auto new_face = CGAL::Euler::add_face (face, fg);
           put (fcolor, new_face,
@@ -194,11 +195,22 @@ link_to_fg_with_color (const Triangulation_3 &t,
 }
 
 void
-mesh (const SubTri &T, const std::string &fname, const Atom *atom)
+mesh (const SubTri &T, const std::string &fname, const Atom *atom,
+      CGAL::Surface_mesh<EK::Point_3> &comb_mesh)
 {
   printf ("meshing %s...\n", fname.c_str ());
   CGAL::Surface_mesh<EK::Point_3> m;
   link_to_fg_with_color (T, T.infinite_vertex (), m, atom, fname);
+
+  std::vector<Mesh::Face_index> new_faces;
+  std::vector<Mesh::Vertex_index> new_vertices;
+  CGAL::Polygon_mesh_processing::refine (m, m.faces (),
+                                         std::back_inserter (new_faces),
+                                         std::back_inserter (new_vertices));
+
+  auto tmp = comb_mesh;
+  CGAL::Polygon_mesh_processing::corefine_and_compute_union (m, tmp,
+                                                             comb_mesh);
 }
 
 void
@@ -222,7 +234,7 @@ power (const Model &model, Rt &T)
 
 std::array<double, 4>
 subdivide (const Rt::Vertex_handle &vh, const Rt &T,
-           const Cmd_line_options &options)
+           Cmd_line_options &options)
 {
   const std::set<std::string> solute_resn{ "DT", "DA", "DG", "DC" };
   double vol = 0.;
@@ -255,7 +267,6 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T,
 
   for (const auto &facet : subtri.finite_facets ())
     {
-
       std::vector<int> points{ 0, 1, 2, 3 };
       points.erase (std::remove (points.begin (), points.end (), facet.second),
                     points.end ());
@@ -270,7 +281,6 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T,
       CGAL::Object test = subtri.dual (facet);
       if (const EK::Ray_3 *r = CGAL::object_cast<EK::Ray_3> (&test))
         {
-
           CGAL::Triangle_3<EK> tri (v1->point ().point (),
                                     v2->point ().point (),
                                     v3->point ().point ());
@@ -335,7 +345,7 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T,
                          + vh->info ()->atom_name () + "_"
                          + std::to_string (vh->info ()->atom_serial_number ())
                          + ".off" };
-      mesh (subtri, fname, vh->info());
+      mesh (subtri, fname, vh->info (), options.comb_mesh_p);
     }
   return { vol, overlap_vol, area, interfacial_area };
 }

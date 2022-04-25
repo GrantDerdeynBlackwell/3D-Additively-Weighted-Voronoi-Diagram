@@ -228,12 +228,6 @@ mesh_io_test (Icosphere ico, const std::string &fname, Mesh &comb_mesh)
   ico.m.clear ();
 }
 void
-mesh_io_test (const Icosphere &ico)
-{
-  mesh_io_test (ico, "test.ply");
-}
-
-void
 compute_voronoi_faces (Icosphere &icosphere)
 {
 
@@ -361,8 +355,7 @@ compute_voronoi_vertices (Icosphere &ico)
 std::array<double, 5>
 find_neighbors (const Model &model, const Atom &atom,
                 const std::size_t subdivisions,
-                Mesh &comb_mesh,
-                const Cmd_line_options &options)
+                Cmd_line_options &options)
 {
   Hyperbola_map h;
   double r = G_atom_classifier.get_properties (atom).value ();
@@ -396,10 +389,11 @@ find_neighbors (const Model &model, const Atom &atom,
 
   if (options.mesh_awVd)
     {
-      mesh_io_test (ico, options.awVd_mesh_dir.string () + "awVd_"
-                             + atom.atom_name () + "_"
-                             + std::to_string (atom.atom_serial_number ())
-                             + ".off", comb_mesh);
+      mesh_io_test (ico,
+                    options.awVd_mesh_dir.string () + "awVd_"
+                        + atom.atom_name () + "_"
+                        + std::to_string (atom.atom_serial_number ()) + ".off",
+                    options.comb_mesh_v);
     }
   auto v = compute_volume (ico);
 

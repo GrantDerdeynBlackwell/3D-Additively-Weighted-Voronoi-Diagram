@@ -2,6 +2,7 @@
 #define G_BFS_FOR_VERT
 
 #include "icosphere.h"
+#include "parser.h"
 #include "typedefs.h"
 #include <Eigen/src/Core/Matrix.h>
 

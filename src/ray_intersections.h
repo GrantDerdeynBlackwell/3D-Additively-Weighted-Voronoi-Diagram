@@ -2,6 +2,7 @@
 #define G_RAY_INTERSECTIONS
 
 #include "typedefs.h"
+#include "parser.h"
 
 std::pair<double, const Atom *>
 compute_scalar_dist (const Ray &ray,

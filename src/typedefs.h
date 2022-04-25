@@ -1,8 +1,6 @@
 #ifndef G_TYPEDEFS
 #define G_TYPEDEFS
 
-#include "parser.h"
-
 #include "ESBTL/molecular_system.h"
 #include "ESBTL/xyz_utils.h"
 #include <CGAL/MP_Float.h>
@@ -31,7 +29,6 @@
 #include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/Surface_mesh.h>
-#include <CGAL/draw_surface_mesh.h>
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Regular_triangulation_3.h>

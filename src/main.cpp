@@ -278,9 +278,9 @@ main (int argc, const char **argv)
         {
           // Option -h is defined. Print help text
           printf (
-              "Usage: NAME FILENAME SUBDIVISIONS [OPTIONS]\n"
+              "Usage: vdos FILENAME SUBDIVISIONS [OPTIONS]\n"
               "Compute the Voronoi diagram of spheres for a pdb\n"
-              "Example: NAME example.pdb 2\n"
+              "Example: vorona example.pdb 2\n"
               "Output control:\n"
               "-vp   output power diagram volumes to pdb\n"
               "-vv   output awVd volumes to pdb\n"

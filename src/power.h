@@ -6,6 +6,6 @@
 void power (const Model &model, Rt &T);
 
 std::array<double, 4> subdivide (const Rt::Vertex_handle &vh, const Rt &T,
-                                 const Cmd_line_options &options);
+                                 Cmd_line_options &options);
 
 #endif

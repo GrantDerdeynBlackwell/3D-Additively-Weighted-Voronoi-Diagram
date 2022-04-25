@@ -496,7 +496,6 @@ bfs_for_vert (
                                   vcolor, evisited);
                   if (!CGAL::is_triangle_mesh (ico.m))
                     {
-                      mesh_io_test (ico, "debug.ply");
                       throw std::runtime_error (
                           "mesh is in invalid state after bfs");
                     }
