@@ -72,6 +72,8 @@ The ```-v*``` flag creates an additional pdb that contains the volume of the cel
 
 The ```-a*``` flag creates an additional pdb that contains the surface area of each cell that is in contact with another atom that is not part of a DNA strand.
 
+The radii associated with each atom can be changed by editing ```data/bondi_classifier.txt```.
+
 ## Citations
 
 1.  Zhongyin Hu, Xiang Li, Adarsh Krishnamurthy, Iddo Hanniel & Sara McMains (2017) Voronoi cells of non-general position spheres using the GPU, Computer-Aided Design and Applications, 14:5, 572-581, DOI: 10.1080/16864360.2016.1273576 
