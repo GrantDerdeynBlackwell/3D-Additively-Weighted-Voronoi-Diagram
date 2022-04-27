@@ -44,12 +44,10 @@ struct Cmd_line_options
   bool mesh_power = false;
   std::filesystem::path power_mesh_dir
       = std::filesystem::exists ("./outputs/") ? "./outputs/" : "./";
-  CGAL::Surface_mesh<EK::Point_3> comb_mesh_p;
 
   bool mesh_awVd = false;
   std::filesystem::path awVd_mesh_dir
       = std::filesystem::exists ("./outputs/") ? "./outputs/" : "./";
-  Mesh comb_mesh_v;
 
   bool output_csv = true;
   std::filesystem::path csv{ "volumes.csv" };

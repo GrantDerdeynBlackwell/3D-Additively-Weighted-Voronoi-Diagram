@@ -2,7 +2,12 @@ __pycache__/
 .cache/
 CMakeFiles/
 __/
+outputs/
+builds/
 vdos
+Makefile
+tags
+CMakeCache.txt
 *.ipynb
 *.html
 *.json
@@ -18,4 +23,7 @@ vdos
 *.log
 *.d
 *.make
-
+*.pdb
+*.csv
+*.off
+*.png

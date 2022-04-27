@@ -195,22 +195,11 @@ link_to_fg_with_color (const Triangulation_3 &t,
 }
 
 void
-mesh (const SubTri &T, const std::string &fname, const Atom *atom,
-      CGAL::Surface_mesh<EK::Point_3> &comb_mesh)
+mesh (const SubTri &T, const std::string &fname, const Atom *atom)
 {
   printf ("meshing %s...\n", fname.c_str ());
   CGAL::Surface_mesh<EK::Point_3> m;
   link_to_fg_with_color (T, T.infinite_vertex (), m, atom, fname);
-
-  std::vector<Mesh::Face_index> new_faces;
-  std::vector<Mesh::Vertex_index> new_vertices;
-  CGAL::Polygon_mesh_processing::refine (m, m.faces (),
-                                         std::back_inserter (new_faces),
-                                         std::back_inserter (new_vertices));
-
-  auto tmp = comb_mesh;
-  CGAL::Polygon_mesh_processing::corefine_and_compute_union (m, tmp,
-                                                             comb_mesh);
 }
 
 void
@@ -233,8 +222,7 @@ power (const Model &model, Rt &T)
 }
 
 std::array<double, 4>
-subdivide (const Rt::Vertex_handle &vh, const Rt &T,
-           Cmd_line_options &options)
+subdivide (const Rt::Vertex_handle &vh, const Rt &T, Cmd_line_options &options)
 {
   const std::set<std::string> solute_resn{ "DT", "DA", "DG", "DC" };
   double vol = 0.;
@@ -308,44 +296,43 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T,
               += interface_flag
                      ? std::sqrt (CGAL::to_double (tri.squared_area ()))
                      : 0.;
-        }
 
-      vector_t tet0 = { CGAL::to_double (vh->point ().x ()),
-                        CGAL::to_double (vh->point ().y ()),
-                        CGAL::to_double (vh->point ().z ()) };
-      vector_t tet1 = { CGAL::to_double (v1->point ().x ()),
-                        CGAL::to_double (v1->point ().y ()),
-                        CGAL::to_double (v1->point ().z ()) };
-      vector_t tet2 = { CGAL::to_double (v2->point ().x ()),
-                        CGAL::to_double (v2->point ().y ()),
-                        CGAL::to_double (v2->point ().z ()) };
-      vector_t tet3 = { CGAL::to_double (v3->point ().x ()),
-                        CGAL::to_double (v3->point ().y ()),
-                        CGAL::to_double (v3->point ().z ()) };
+          vector_t tet0 = { CGAL::to_double (vh->point ().x ()),
+                            CGAL::to_double (vh->point ().y ()),
+                            CGAL::to_double (vh->point ().z ()) };
+          vector_t tet1 = { CGAL::to_double (v1->point ().x ()),
+                            CGAL::to_double (v1->point ().y ()),
+                            CGAL::to_double (v1->point ().z ()) };
+          vector_t tet2 = { CGAL::to_double (v2->point ().x ()),
+                            CGAL::to_double (v2->point ().y ()),
+                            CGAL::to_double (v2->point ().z ()) };
+          vector_t tet3 = { CGAL::to_double (v3->point ().x ()),
+                            CGAL::to_double (v3->point ().y ()),
+                            CGAL::to_double (v3->point ().z ()) };
 
-      if ((tet1 - tet0).cross (tet2 - tet0).dot (tet3 - tet0) >= 1e-9)
-        {
-          Tetrahedron tet{ tet0, tet1, tet2, tet3 };
-          vol += tet.volume;
+          if ((tet1 - tet0).cross (tet2 - tet0).dot (tet3 - tet0) >= 1e-9)
+            {
+              Tetrahedron tet{ tet0, tet1, tet2, tet3 };
+              vol += tet.volume;
 
-          overlap_vol += tet.volume > 1e-9 ? overlap (s, tet) : 0;
-        }
-      else if ((tet2 - tet0).cross (tet1 - tet0).dot (tet3 - tet0) >= 1e-9)
-        {
-          Tetrahedron tet{ tet0, tet2, tet1, tet3 };
-          vol += tet.volume;
+              overlap_vol += tet.volume > 1e-9 ? overlap (s, tet) : 0;
+            }
+          else if ((tet2 - tet0).cross (tet1 - tet0).dot (tet3 - tet0) >= 1e-9)
+            {
+              Tetrahedron tet{ tet0, tet2, tet1, tet3 };
+              vol += tet.volume;
 
-          overlap_vol += tet.volume > 1e-9 ? overlap (s, tet) : 0;
+              overlap_vol += tet.volume > 1e-9 ? overlap (s, tet) : 0;
+            }
         }
     }
-
   if (options.mesh_power)
     {
       std::string fname{ options.power_mesh_dir.string () + "power_"
                          + vh->info ()->atom_name () + "_"
                          + std::to_string (vh->info ()->atom_serial_number ())
                          + ".off" };
-      mesh (subtri, fname, vh->info (), options.comb_mesh_p);
+      mesh (subtri, fname, vh->info ());
     }
   return { vol, overlap_vol, area, interfacial_area };
 }

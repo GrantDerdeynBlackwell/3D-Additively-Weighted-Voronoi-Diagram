@@ -36,7 +36,7 @@ CMAKE_CXX_FLAGS_RELWITHDEBUGINFO	CMakeLists.txt	/^set (CMAKE_CXX_FLAGS_RELWITHDE
 CMAKE_CXX_STANDARD	CMakeLists.txt	/^set (CMAKE_CXX_STANDARD 17)$/;"	v
 CMAKE_INSTALL_COMPONENT	cmake_install.cmake	/^    set(CMAKE_INSTALL_COMPONENT "${COMPONENT}")$/;"	v
 CMAKE_INSTALL_COMPONENT	cmake_install.cmake	/^    set(CMAKE_INSTALL_COMPONENT)$/;"	v
-CMAKE_INSTALL_CONFIG_NAME	cmake_install.cmake	/^    set(CMAKE_INSTALL_CONFIG_NAME "")$/;"	v
+CMAKE_INSTALL_CONFIG_NAME	cmake_install.cmake	/^    set(CMAKE_INSTALL_CONFIG_NAME "Release")$/;"	v
 CMAKE_INSTALL_MANIFEST	cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")$/;"	v
 CMAKE_INSTALL_MANIFEST	cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")$/;"	v
 CMAKE_INSTALL_PREFIX	cmake_install.cmake	/^  set(CMAKE_INSTALL_PREFIX "\/usr\/local")$/;"	v
@@ -124,8 +124,6 @@ clean	Makefile	/^clean:$/;"	t
 clean/fast	Makefile	/^clean\/fast: clean$/;"	t
 cmake_check_build_system	Makefile	/^cmake_check_build_system:$/;"	t
 cmake_force	Makefile	/^cmake_force:$/;"	t
-comb_mesh_p	src/parser.h	/^  CGAL::Surface_mesh<EK::Point_3> comb_mesh_p;$/;"	m	struct:Cmd_line_options	typeref:typename:CGAL::Surface_mesh<EK::Point_3>
-comb_mesh_v	src/parser.h	/^  Mesh comb_mesh_v;$/;"	m	struct:Cmd_line_options	typeref:typename:Mesh
 compute_bisector	src/compute_bisectors.cpp	/^compute_bisector (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
 compute_bisector_diff	src/compute_bisectors.cpp	/^compute_bisector_diff (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
 compute_bisector_same	src/compute_bisectors.cpp	/^compute_bisector_same (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
@@ -167,9 +165,9 @@ less_z_3_object	src/power.cpp	/^  less_z_3_object () const$/;"	f	struct:Weighted
 link_to_fg_with_color	src/power.cpp	/^link_to_fg_with_color (const Triangulation_3 &t,$/;"	f	typeref:typename:boost::graph_traits<FG>::vertex_descriptor
 m	src/icosphere.h	/^  Mesh m;$/;"	m	class:Icosphere	typeref:typename:Mesh
 main	src/main.cpp	/^main (int argc, const char **argv)$/;"	f	typeref:typename:int
-mesh	src/power.cpp	/^mesh (const SubTri &T, const std::string &fname, const Atom *atom,$/;"	f	typeref:typename:void
+mesh	src/power.cpp	/^mesh (const SubTri &T, const std::string &fname, const Atom *atom)$/;"	f	typeref:typename:void
 mesh_awVd	src/parser.h	/^  bool mesh_awVd = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-mesh_io_test	src/awVd_ray.cpp	/^mesh_io_test (Icosphere ico, const std::string &fname, Mesh &comb_mesh)$/;"	f	typeref:typename:void
+mesh_io_test	src/awVd_ray.cpp	/^mesh_io_test (Icosphere ico, const std::string &fname)$/;"	f	typeref:typename:void
 mesh_power	src/parser.h	/^  bool mesh_power = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
 operator () 	src/power.cpp	/^  operator() (const Weighted_point &p, const Weighted_point &q) const$/;"	f	struct:WeightedLessX	typeref:typename:bool	file:
 operator () 	src/power.cpp	/^  operator() (const Weighted_point &p, const Weighted_point &q) const$/;"	f	struct:WeightedLessY	typeref:typename:bool	file:
@@ -261,7 +259,7 @@ src/voronoi_mesh_details.cpp.s	Makefile	/^src\/voronoi_mesh_details.cpp.s:$/;"	t
 src/voronoi_mesh_details.i	Makefile	/^src\/voronoi_mesh_details.i: src\/voronoi_mesh_details.cpp.i$/;"	t
 src/voronoi_mesh_details.o	Makefile	/^src\/voronoi_mesh_details.o: src\/voronoi_mesh_details.cpp.o$/;"	t
 src/voronoi_mesh_details.s	Makefile	/^src\/voronoi_mesh_details.s: src\/voronoi_mesh_details.cpp.s$/;"	t
-subdivide	src/power.cpp	/^subdivide (const Rt::Vertex_handle &vh, const Rt &T,$/;"	f	typeref:typename:std::array<double,4>
+subdivide	src/power.cpp	/^subdivide (const Rt::Vertex_handle &vh, const Rt &T, Cmd_line_options &options)$/;"	f	typeref:typename:std::array<double,4>
 subdivisions	src/icosphere.h	/^  subdivisions () const$/;"	f	class:Icosphere	typeref:typename:std::size_t
 trace_out_edge	src/bfs_for_vert.cpp	/^trace_out_edge ($/;"	f	typeref:typename:void
 try_to_add_vert	src/bfs_for_vert.cpp	/^try_to_add_vert ($/;"	f	typeref:typename:Mesh::Halfedge_index

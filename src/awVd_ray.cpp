@@ -155,8 +155,9 @@ compute_volume (const Icosphere &ico)
 
 #include <CGAL/Polygon_mesh_processing/refine.h>
 #include <CGAL/Polygon_mesh_processing/corefinement.h>
+#include <CGAL/Polygon_mesh_processing/self_intersections.h>
 void
-mesh_io_test (Icosphere ico, const std::string &fname, Mesh &comb_mesh)
+mesh_io_test (Icosphere ico, const std::string &fname)
 {
   printf ("meshing %s...\n", fname.c_str ());
 
@@ -210,17 +211,6 @@ mesh_io_test (Icosphere ico, const std::string &fname, Mesh &comb_mesh)
         }
     }
   std::ofstream ofile (fname, std::ios::binary);
-
-  std::vector<Mesh::Face_index> new_faces;
-  std::vector<Mesh::Vertex_index> new_vertices;
-
-  CGAL::Polygon_mesh_processing::refine (ico.m, ico.m.faces (),
-                                         std::back_inserter (new_faces),
-                                         std::back_inserter (new_vertices));
-
-  auto tmp = comb_mesh;
-  CGAL::Polygon_mesh_processing::corefine_and_compute_union (ico.m, tmp,
-                                                             comb_mesh);
 
   CGAL::IO::write_OFF (ofile, ico.m,
                        CGAL::parameters::face_color_map (fcolor));
@@ -354,8 +344,7 @@ compute_voronoi_vertices (Icosphere &ico)
 
 std::array<double, 5>
 find_neighbors (const Model &model, const Atom &atom,
-                const std::size_t subdivisions,
-                Cmd_line_options &options)
+                const std::size_t subdivisions, Cmd_line_options &options)
 {
   Hyperbola_map h;
   double r = G_atom_classifier.get_properties (atom).value ();
@@ -392,8 +381,7 @@ find_neighbors (const Model &model, const Atom &atom,
       mesh_io_test (ico,
                     options.awVd_mesh_dir.string () + "awVd_"
                         + atom.atom_name () + "_"
-                        + std::to_string (atom.atom_serial_number ()) + ".off",
-                    options.comb_mesh_v);
+                        + std::to_string (atom.atom_serial_number ()) + ".off");
     }
   auto v = compute_volume (ico);
 

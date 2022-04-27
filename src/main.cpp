@@ -2,6 +2,7 @@
 #include "parser.h"
 #include "power.h"
 #include "typedefs.h"
+#include <CGAL/Surface_mesh/IO/OFF.h>
 #include <ESBTL/PDB.h>
 #include <ESBTL/atom_classifier.h>
 #include <ESBTL/default.h>
@@ -280,7 +281,7 @@ main (int argc, const char **argv)
           printf (
               "Usage: vdos FILENAME SUBDIVISIONS [OPTIONS]\n"
               "Compute the Voronoi diagram of spheres for a pdb\n"
-              "Example: vorona example.pdb 2\n"
+              "Example: vdos example.pdb 2\n"
               "Output control:\n"
               "-vp   output power diagram volumes to pdb\n"
               "-vv   output awVd volumes to pdb\n"
@@ -428,18 +429,18 @@ main (int argc, const char **argv)
           csv << "atom,awVd_volume,awVd_overlap_volume,awVd_surface_area,awVd_"
                  "interfacial_surface_area,maximum_gaussian_curvature,power_"
                  "volume,power_overlap_volume,power_surface_area,power_"
-                 "interfacial_surface_area,%%diff_volume,%%diff_overlap_"
-                 "volume,%%diff_surface_area,%%diff_interfacial_surface_area"
+                 "interfacial_surface_area,%diff_volume,%diff_overlap_"
+                 "volume,%diff_surface_area,%diff_interfacial_surface_area"
               << std::endl;
         }
       for (auto &atom_prop : prop_map)
         {
           auto &prop = atom_prop.second;
           auto atom = *atom_prop.first;
-          prop[9] = prop[5] != 0. ? ((prop[0] - prop[5]) / prop[5]) : 0.;
-          prop[10] = prop[6] != 0. ? ((prop[1] - prop[6]) / prop[6]) : 0.;
-          prop[11] = prop[7] != 0. ? ((prop[2] - prop[7]) / prop[7]) : 0.;
-          prop[12] = prop[8] != 0. ? ((prop[3] - prop[8]) / prop[8]) : 0.;
+          prop[9] = prop[5] != 0. ? ((prop[0] - prop[5]) / prop[5]) * 100. : 0.;
+          prop[10] = prop[6] != 0. ? ((prop[1] - prop[6]) / prop[6]) * 100. : 0.;
+          prop[11] = prop[7] != 0. ? ((prop[2] - prop[7]) / prop[7]) * 100. : 0.;
+          prop[12] = prop[8] != 0. ? ((prop[3] - prop[8]) / prop[8]) * 100. : 0.;
           if (options.output_csv)
             {
               csv << atom.atom_name () << "_" << atom.residue_name () << "_"
