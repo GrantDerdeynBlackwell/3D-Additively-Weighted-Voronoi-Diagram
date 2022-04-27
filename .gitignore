@@ -8,6 +8,7 @@ vdos
 Makefile
 tags
 CMakeCache.txt
+.clang-format
 *.ipynb
 *.html
 *.json
