@@ -45,13 +45,19 @@
 
 #include <stack>
 
+#include <boost/program_options.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/positional_options.hpp>
+#include <boost/program_options/value_semantic.hpp>
+
 #define CUTOFF 2.8
 
 // awVd typedefs
 // using NT = typename CGAL::MP_Float;
 using NT = double;
-//using K = typename CGAL::Simple_cartesian<NT>;
-//using K = typename ESBTL::CGAL::EPIC_kernel_with_atom;
+// using K = typename CGAL::Simple_cartesian<NT>;
+// using K = typename ESBTL::CGAL::EPIC_kernel_with_atom;
 using K = typename CGAL::Exact_predicates_inexact_constructions_kernel;
 using double_to_NT = typename CGAL::NT_converter<double, NT>;
 
@@ -76,6 +82,9 @@ using Accept_none_occupancy_policy =
 
 const T_Atom_classifier G_atom_classifier ("./data/bondi_classifier.txt");
 const double_to_NT G_double_to_NT;
+
+using Voronoi_map = typename std::map<const std::array<const Atom *, 4>,
+                                      const std::array<const double, 4> >;
 
 // using K = typename CGAL::Simple_cartesian<double>;
 using Mesh = typename CGAL::Surface_mesh<K::Point_3>;

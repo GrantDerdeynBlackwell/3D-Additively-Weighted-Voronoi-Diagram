@@ -123,7 +123,7 @@ get_t_if_exists (
         }
 
       poly.push_back (plane.to_2d (p));
-//      evisited[ico.m.edge (h_edge)] = true;
+      //      evisited[ico.m.edge (h_edge)] = true;
     }
   if (!poly.is_simple ())
     {
@@ -196,7 +196,7 @@ handle_voronoi_vertex (
     const Atom *new_color,
     Mesh::Property_map<vertex_descriptor, std::set<const Atom *> > &vcolor,
     Mesh::Property_map<Mesh::Edge_index, bool> &evisited,
-    Mesh::Halfedge_index h, int &trys)
+    Mesh::Halfedge_index h, int &trys, Voronoi_map &voronoi_vertices)
 {
 
   std::array<const Atom *, 3> atoms{ curve_colors[0], curve_colors[1],
@@ -229,6 +229,14 @@ handle_voronoi_vertex (
           if (nv != Mesh::null_halfedge ())
             {
               ok = true;
+              std::array<const Atom *, 4> v{ curve_colors[0], curve_colors[1],
+                                             new_color, &ico.atom () };
+              std::sort (v.begin (), v.end ());
+              voronoi_vertices.insert (
+                  { v,
+                    { v_vert[0] * ico.radius () + ico.center ()[0],
+                      v_vert[1] * ico.radius () + ico.center ()[1],
+                      v_vert[2] * ico.radius () + ico.center ()[2], 0. } });
               auto faces_around_nv = ico.m.faces_around_target (nv);
               // If a Voronoi vertex was added, there are now new triangles.
               // We add them to f_range so they can be evaluated as well.
@@ -244,12 +252,12 @@ handle_voronoi_vertex (
       for (const auto feval : f_range)
         {
           handle_voronoi_vertex (ico, curve_colors, backup, vcolor, evisited,
-                                 ico.m.halfedge (feval), ++trys);
+                                 ico.m.halfedge (feval), ++trys,
+                                 voronoi_vertices);
         }
     }
 
   return ok;
-  //  assert (!contained_v_verts[ico.m.face (h)].empty ());
 }
 
 void
@@ -279,7 +287,8 @@ trace_out_edge (
     Icosphere &ico, const std::array<const Atom *, 2> &curve_colors,
     Mesh::Halfedge_index s,
     Mesh::Property_map<vertex_descriptor, std::set<const Atom *> > &vcolor,
-    Mesh::Property_map<Mesh::Edge_index, bool> &evisited)
+    Mesh::Property_map<Mesh::Edge_index, bool> &evisited,
+    Voronoi_map &voronoi_vertices)
 {
   for (const auto edge : ico.m.edges ())
     {
@@ -362,7 +371,7 @@ trace_out_edge (
                       continue;
                     }
                   handle_voronoi_vertex (ico, curve_colors, t.second, vcolor,
-                                         evisited, h, trys);
+                                         evisited, h, trys, voronoi_vertices);
                 }
               // This means the curve leaves the face. It may form a loop or
               // hit the Voronoi vertex later.
@@ -399,21 +408,19 @@ trace_out_edge (
                       queue.pop_back ();
                     }
                   nh = ico.m.prev (ico.m.opposite (h_int));
-                  //     continue;
                 }
             }
         }
       connect_and_visit (h, ico, evisited);
     }
-  //  throw std::runtime_error (
-  //      "search exhausted without finding Voronoi vertex or loop");
 }
 
 void
 bfs_for_vert (
     Icosphere &ico, Mesh::Edge_index s,
     Mesh::Property_map<vertex_descriptor, std::set<const Atom *> > &vcolor,
-    Mesh::Property_map<Mesh::Edge_index, bool> &evisited)
+    Mesh::Property_map<Mesh::Edge_index, bool> &evisited,
+    Voronoi_map &voronoi_vertices)
 {
   for (const auto edge : ico.m.edges ())
     {
@@ -464,13 +471,6 @@ bfs_for_vert (
                       = K::Point_3{ int_norm[0] * t.first,
                                     int_norm[1] * t.first,
                                     int_norm[2] * t.first };
-                  //                  CGAL::Euler::split_face (nh, ico.m.next
-                  //                  (ico.m.next (nh)),
-                  //                                           ico.m);
-                  //                  CGAL::Euler::split_face (
-                  //                      ico.m.opposite (h),
-                  //                      ico.m.next (ico.m.next
-                  //                      (ico.m.opposite (h))), ico.m);
 
                   // Try again with this new edge
                   connect (nh, ico);
@@ -478,7 +478,8 @@ bfs_for_vert (
                   if (t.second != nullptr)
                     {
                       vcolor[ico.m.target (nh)].insert (t.second);
-                      bfs_for_vert (ico, s, vcolor, evisited);
+                      bfs_for_vert (ico, s, vcolor, evisited,
+                                    voronoi_vertices);
                     }
                   // return;
                 }
@@ -490,10 +491,11 @@ bfs_for_vert (
                                     int_norm[2] * t.first };
                   vcolor[ico.m.target (nh)].insert (curve_colors[0]);
                   vcolor[ico.m.target (nh)].insert (curve_colors[1]);
-                  trace_out_edge (ico, curve_colors, nh, vcolor, evisited);
+                  trace_out_edge (ico, curve_colors, nh, vcolor, evisited,
+                                  voronoi_vertices);
 
                   trace_out_edge (ico, curve_colors, ico.m.opposite (h),
-                                  vcolor, evisited);
+                                  vcolor, evisited, voronoi_vertices);
                   if (!CGAL::is_triangle_mesh (ico.m))
                     {
                       throw std::runtime_error (

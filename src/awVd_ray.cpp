@@ -2,7 +2,6 @@
 #include "bfs_for_vert.h"
 #include "compute_bisectors.h"
 #include "icosphere.h"
-#include "parser.h"
 #include "ray_intersections.h"
 #include "typedefs.h"
 #include "voronoi_mesh_details.h"
@@ -30,6 +29,7 @@
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/Surface_mesh.h>
 
+namespace po = boost::program_options;
 typedef CGAL::IO::Color Color;
 
 void
@@ -75,9 +75,8 @@ compute_curvature (const Hyperbola &h, const NT x, const NT y, const NT z)
 }
 
 std::array<double, 5>
-compute_volume (const Icosphere &ico)
+compute_volume (const Icosphere &ico, const std::set<std::string> &residues)
 {
-  const std::set<std::string> solute_resn{ "DT", "DA", "DG", "DC" };
   auto vatom = ico.m.property_map<vertex_descriptor, std::set<const Atom *> > (
       "v:atom");
   assert (vatom.second);
@@ -97,9 +96,8 @@ compute_volume (const Icosphere &ico)
         {
           if (!vatom.first[v].empty ())
             {
-              if (solute_resn.find (
-                      (*vatom.first[v].begin ())->residue_name ())
-                  == solute_resn.end ())
+              if (residues.find ((*vatom.first[v].begin ())->residue_name ())
+                  == residues.cend ())
                 {
                   if (vatom.first[v].size () == 1)
                     {
@@ -159,8 +157,6 @@ compute_volume (const Icosphere &ico)
 void
 mesh_io_test (Icosphere ico, const std::string &fname)
 {
-  printf ("meshing %s...\n", fname.c_str ());
-
   auto vatom = ico.m.property_map<vertex_descriptor, std::set<const Atom *> > (
       "v:atom");
   assert (vatom.second);
@@ -252,7 +248,7 @@ const std::map<int, std::string> G_omap{ { 0, "\x1B[31m" }, { 1, "\x1B[32m" },
                                          { 6, "\x1B[37m" } };
 
 void
-compute_voronoi_vertices (Icosphere &ico)
+compute_voronoi_vertices (Icosphere &ico, Voronoi_map &voronoi_vertices)
 {
   auto vcolor
       = ico.m.property_map<vertex_descriptor, std::set<const Atom *> > (
@@ -326,7 +322,8 @@ compute_voronoi_vertices (Icosphere &ico)
                    && !vcolor.first[ico.m.vertex (*eit, 1)].empty ())
             {
               // printf ("intersect.empty()\n");
-              bfs_for_vert (ico, *eit, vcolor.first, evisited.first);
+              bfs_for_vert (ico, *eit, vcolor.first, evisited.first,
+                            voronoi_vertices);
             }
           else
             {
@@ -344,7 +341,9 @@ compute_voronoi_vertices (Icosphere &ico)
 
 std::array<double, 5>
 find_neighbors (const Model &model, const Atom &atom,
-                const std::size_t subdivisions, Cmd_line_options &options)
+                const std::size_t subdivisions, const po::variables_map &vm,
+                const std::set<std::string> &residues,
+                Voronoi_map &voronoi_vertices)
 {
   Hyperbola_map h;
   double r = G_atom_classifier.get_properties (atom).value ();
@@ -370,20 +369,19 @@ find_neighbors (const Model &model, const Atom &atom,
   compute_voronoi_faces (ico);
   // mesh (ico);
   // printf ("finished computing faces.\ncomputing vertices...\n");
-  compute_voronoi_vertices (ico);
+  compute_voronoi_vertices (ico, voronoi_vertices);
   // mesh (ico);
   // printf ("finished computing vertices.\ncomputing edges...");
   // compute_voronoi_edges (ico);
   // printf ("finished computing edges.\n");
 
-  if (options.mesh_awVd)
+  if (vm.count ("mv"))
     {
-      mesh_io_test (ico,
-                    options.awVd_mesh_dir.string () + "awVd_"
-                        + atom.atom_name () + "_"
-                        + std::to_string (atom.atom_serial_number ()) + ".off");
+      mesh_io_test (ico, "outputs/awVd_" + atom.atom_name () + "_"
+                             + std::to_string (atom.atom_serial_number ())
+                             + ".off");
     }
-  auto v = compute_volume (ico);
+  auto v = compute_volume (ico, residues);
 
   h.clear ();
 

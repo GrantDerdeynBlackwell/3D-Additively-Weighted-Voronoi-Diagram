@@ -1,5 +1,4 @@
 #include "awVd_ray.h"
-#include "parser.h"
 #include "power.h"
 #include "typedefs.h"
 #include <CGAL/Surface_mesh/IO/OFF.h>
@@ -8,8 +7,15 @@
 #include <ESBTL/default.h>
 #include <ESBTL/occupancy_handlers.h>
 #include <Eigen/Eigen>
+#include <algorithm>
+#include <boost/program_options.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/positional_options.hpp>
+#include <boost/program_options/value_semantic.hpp>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
 #include <ostream>
 #include <string>
 namespace ESBTL
@@ -22,288 +28,101 @@ operator<< (std::ostream &os, const Atom &atm)
 }
 }
 
-void
-parser (int argc, const char **argv, Cmd_line_options &options)
-{
-  for (int i = 3; i < argc; i++)
-    {
-      if (argv[i][0] == '-')
-        {
-          switch (argv[i][1])
-            {
-            case 'v':
-              // option -v* is defined
-              switch (argv[i][2])
-                {
-                case 'p':
-                  // option -vp is defined. Output power diagram volumes to pdb
-                  options.output_power = true;
-                  if (i < argc - 1)
-                    {
-                      if (argv[i + 1][0] != '-')
-                        {
-                          // a filename has been given. Override the default
-                          // value
-                          std::filesystem::path arg
-                              = (std::filesystem::path)argv[i + 1];
-                          auto fname = arg.filename ();
-                          auto parent = arg.parent_path ();
-                          options.power_pdb_fname
-                              = arg.replace_extension (".pdb");
-                          options.power_pdb_overlap_fname
-                              = arg.replace_filename (
-                                  arg.stem ()
-                                      .append ("_overlap")
-                                      .replace_extension (".pdb"));
-                        }
-                    }
-                  break;
-                case 'v':
-                  // option -vv is defined. Output awVd volumes to pdb
-                  options.output_awVd = true;
-                  if (i < argc - 1)
-                    {
-                      if (argv[i + 1][0] != '-' && i < argc)
-                        {
-                          // a filename has been given. Override the default
-                          // value
-                          std::filesystem::path arg
-                              = (std::filesystem::path)argv[i + 1];
-                          auto fname = arg.filename ();
-                          auto parent = arg.parent_path ();
-                          options.awVd_pdb_fname
-                              = arg.replace_extension (".pdb");
-                          options.awVd_pdb_overlap_fname
-                              = arg.replace_filename (
-                                  arg.stem ()
-                                      .append ("_overlap")
-                                      .replace_extension (".pdb"));
-                        }
-                    }
-                  break;
-                case 'd':
-                  // option -vd is defined. Output the difference in the awVd
-                  // and power volumes to pdb
-                  options.output_diff = true;
-                  if (i < argc - 1)
-                    {
-                      if (argv[i + 1][0] != '-' && i < argc)
-                        {
-                          // a filename has been given. Override the default
-                          // value
-                          std::filesystem::path arg
-                              = (std::filesystem::path)argv[i + 1];
-                          auto fname = arg.filename ();
-                          auto parent = arg.parent_path ();
-                          options.diff_pdb_fname
-                              = arg.replace_extension (".pdb");
-                          options.diff_pdb_overlap_fname
-                              = arg.replace_filename (
-                                  arg.stem ()
-                                      .append ("_overlap")
-                                      .replace_extension (".pdb"));
-                        }
-                    }
-                  break;
-                }
-              break;
-            case 'a':
-              // option -a* is defined
-              switch (argv[i][2])
-                {
-                case 'p':
-                  // option -ap is defined. Output power diagram surface areas
-                  // to pdb
-                  options.output_power_areas = true;
-                  if (i < argc - 1)
-                    {
-                      if (argv[i + 1][0] != '-')
-                        {
-                          // a filename has been given. Override the default
-                          // value
-                          std::filesystem::path arg
-                              = (std::filesystem::path)argv[i + 1];
-                          auto fname = arg.filename ();
-                          auto parent = arg.parent_path ();
-                          options.pow_area_pdb_fname
-                              = arg.replace_extension (".pdb");
-                          options.pow_interface_area_fname
-                              = arg.replace_filename (
-                                  arg.stem ()
-                                      .append ("_interface")
-                                      .replace_extension (".pdb"));
-                        }
-                    }
-                  break;
-                case 'v':
-                  // option -av is defined. Output awVd surface areas to pdb
-                  options.output_awVd_areas = true;
-                  if (i < argc - 1)
-                    {
-                      if (argv[i + 1][0] != '-' && i < argc)
-                        {
-                          // a filename has been given. Override the default
-                          // value
-                          std::filesystem::path arg
-                              = (std::filesystem::path)argv[i + 1];
-                          auto fname = arg.filename ();
-                          auto parent = arg.parent_path ();
-                          options.awVd_area_pdb_fname
-                              = arg.replace_extension (".pdb");
-                          options.awVd_interface_area_fname
-                              = arg.replace_filename (
-                                  arg.stem ()
-                                      .append ("_interface")
-                                      .replace_extension (".pdb"));
-                        }
-                    }
-                  break;
-                case 'd':
-                  // option -ad is defined. Output the difference in the awVd
-                  // and power volumes to pdb
-                  options.output_areas_diff = true;
-                  if (i < argc - 1)
-                    {
-                      if (argv[i + 1][0] != '-' && i < argc)
-                        {
-                          // a filename has been given. Override the default
-                          // value
-                          std::filesystem::path arg
-                              = (std::filesystem::path)argv[i + 1];
-                          auto fname = arg.filename ();
-                          auto parent = arg.parent_path ();
-                          options.diff_area_pdb_fname
-                              = arg.replace_extension (".pdb");
-                          options.diff_area_pdb_interface_fname
-                              = arg.replace_filename (
-                                  arg.stem ()
-                                      .append ("_interace")
-                                      .replace_extension (".pdb"));
-                        }
-                    }
-                  break;
-                }
-              break;
-            case 'm':
-              // option -m* is defined
-              switch (argv[i][2])
-                {
-                case 'p':
-                  // option -mp is defined. Output power diagram meshes
-                  options.mesh_power = true;
-                  if (i < argc - 1)
-                    {
-                      if (argv[i + 1][0] != '-' && i < argc)
-                        {
-                          // a filename has been given. Override the default
-                          // value
-                          std::filesystem::path arg
-                              = (std::filesystem::path)argv[i + 1];
-                          auto parent = arg.parent_path ();
-                          options.power_mesh_dir = parent;
-                        }
-                    }
-                  break;
-                case 'v':
-                  // option -mv is defined. Output awVd meshes
-                  options.mesh_awVd = true;
-                  if (i < argc - 1)
-                    {
-                      if (argv[i + 1][0] != '-' && i < argc)
-                        {
-                          // a filename has been given. Override the default
-                          // value
-                          std::filesystem::path arg
-                              = (std::filesystem::path)argv[i + 1];
-                          auto parent = arg.parent_path ();
-                          options.awVd_mesh_dir = parent;
-                        }
-                    }
-                  break;
-                }
-              break;
-            case 'k':
-              // option -k is degined. Output maximum curvature to pdb
-              options.output_curvature = true;
-              if (i < argc - 1)
-                {
-                  if (argv[i + 1][0] != '-' && i < argc)
-                    {
-                      // a filename has been given. Override the default value
-                      std::filesystem::path arg
-                          = (std::filesystem::path)argv[i + 1];
-                      auto parent = arg.parent_path ();
-                      options.curvature_pdb_fname = arg;
-                    }
-                }
-              break;
-            case 'c':
-              // Option -c is defined. Output all the parameters to a csv
-              options.output_csv = true;
-              if (i < argc - 1)
-                {
-                  if (argv[i + 1][0] != '-' && i < argc)
-                    {
-                      // a filename has been given. Override the default value
-                      std::filesystem::path arg
-                          = (std::filesystem::path)argv[i + 1];
-                      auto parent = arg.parent_path ();
-                      options.csv = arg;
-                    }
-                }
-              break;
-            }
-        }
-    }
-}
+namespace po = boost::program_options;
 
 int
 main (int argc, const char **argv)
 {
+  po::options_description desc ("Allowed options");
+  desc.add_options () ("help", "produce help message") (
+      "input", po::value<std::string> ()->required (),
+      "pdb file to analyze") ("subdivisions", po::value<int> ()->required (),
+                              "number of subdivisions") (
+      "vp", po::value<std::string> ()->implicit_value (""),
+      "write power volumes to pdb") (
+      "vv", po::value<std::string> ()->implicit_value (""),
+      "write awVd volumes to pdb") ("vd", po::value<std::string> (),
+                                    "output % difference in volumes to pdb") (
+      "op", po::value<std::string> ()->implicit_value (""),
+      "write the power cell-sphere overlaps to pdb") (
+      "ov", po::value<std::string> ()->implicit_value (""),
+      "write the awVd cell-sphere overlaps to pdb") (
+      "od", po::value<std::string> ()->implicit_value (""),
+      "write the % difference in cell-sphere overlaps to pdb") (
+      "ap", po::value<std::string> ()->implicit_value (""),
+      "output power diagram cell surface areas to pdb") (
+      "av", po::value<std::string> ()->implicit_value (""),
+      "output awVd cell surface areas to pdb") (
+      "ad", po::value<std::string> ()->implicit_value (""),
+      "output % difference in cell surface areas to pdb") (
+      "ip", po::value<std::string> ()->implicit_value (""),
+      "output the interfacial power cell surface areas to pdb") (
+      "iv", po::value<std::string> ()->implicit_value (""),
+      "output the interfacial awVd cell surface areas to pdb") (
+      "id", po::value<std::string> ()->implicit_value (""),
+      "output % difference in interfacial cell surface areas to pdb") (
+      "k", po::value<std::string> ()->implicit_value (""),
+      "output maximum Gaussian curvature of each cell to pdb") (
+      "c", po::value<std::string> (),
+      "name of csv") ("mp", po::value<bool> (),
+                      "write a COFF mesh for each power diagram cell") (
+      "mv", po::value<bool> (), "write a COFF mesh for each awVd cell") (
+      "ra", po::value<std::vector<std::string> > ()->multitoken (),
+      "include residues") (
+      "rs", po::value<std::vector<std::string> > ()->multitoken (),
+      "exclude residues") ("verts,v", po::bool_switch (),
+                           "output the voronoi vertices to stdout");
+
+  po::positional_options_description p;
+  p.add ("input", 1);
+  p.add ("subdivisions", 1);
+
+  po::variables_map vm;
+  po::store (po::command_line_parser (argc, argv)
+                 .options (desc)
+                 .positional (p)
+                 .run (),
+             vm);
+  po::notify (vm);
+
   ESBTL::PDB_line_selector sel;
 
   std::vector<System> systems;
   ESBTL::All_atom_system_builder<System> builder (systems,
                                                   sel.max_nb_systems ());
 
-  std::string mesh_filename;
-  Cmd_line_options options;
-  if (argc < 2)
+  std::string filename = vm["input"].as<std::string> ();
+  const int density = vm["subdivisions"].as<int> ();
+
+  std::vector<std::string> default_residues{
+    "DA",  "DG",  "DT",  "DC",  "ALA", "ARG", "ASN", "ASP", "ASX",
+    "CYS", "CYX", "GLU", "GLN", "GLX", "GLY", "HIS", "ILE", "LEU",
+    "LYS", "MET", "PHE", "PRO", "SER", "THR", "TRP", "TYR", "VAL"
+  };
+
+  std::vector<std::string> include;
+  std::vector<std::string> exclude;
+
+  if (vm.count ("ra"))
     {
-      std::cerr << "Please provide a filename" << std::endl;
-      return EXIT_FAILURE;
+      include = vm["ra"].as<std::vector<std::string> > ();
     }
-  if (argc < 3)
+  if (vm.count ("rs"))
     {
-      if ((std::string)argv[1] == "-h")
-        {
-          // Option -h is defined. Print help text
-          printf (
-              "Usage: vdos FILENAME SUBDIVISIONS [OPTIONS]\n"
-              "Compute the Voronoi diagram of spheres for a pdb\n"
-              "Example: vdos example.pdb 2\n"
-              "Output control:\n"
-              "-vp   output power diagram volumes to pdb\n"
-              "-vv   output awVd volumes to pdb\n"
-              "-vd   output %% difference in volumes to pdb\n"
-              "-ap   output power diagram surface areas to pdb\n"
-              "-av   output awVd surface areas to pdb\n"
-              "-ad   output %% difference in surface areas to pdb\n"
-              "-k    output maximum Gaussian curvature of each cell to pdb\n"
-              "-c    output all of the above to a .csv\n"
-              "-mp   write a COFF mesh for each power diagram cell\n"
-              "-mv   write a COFF mesh for each awVd cell\n"
-              "-h    print this help text\n");
-          return EXIT_FAILURE;
-        }
-      std::cerr << "Please give the number of subdivisions" << std::endl;
-      return EXIT_FAILURE;
+      exclude = vm["rs"].as<std::vector<std::string> > ();
     }
 
-  std::string filename = argv[1];
+  std::sort (include.begin (), include.end ());
+  std::sort (exclude.begin (), exclude.end ());
+  std::sort (default_residues.begin (), default_residues.end ());
 
-  const int density = atoi (argv[2]);
-  parser (argc, argv, options);
+  std::set<std::string> residues;
+
+  std::set_difference (default_residues.begin (), default_residues.end (),
+                       exclude.begin (), exclude.end (),
+                       std::inserter (residues, residues.end ()));
+
+  residues.insert (include.begin (), include.end ());
 
   if (ESBTL::read_a_pdb_file (filename, sel, builder,
                               Accept_none_occupancy_policy ()))
@@ -316,92 +135,115 @@ main (int argc, const char **argv)
 
       Model &model = *systems[0].models_begin ();
 
-      std::array<std::ofstream, 13> outs;
+      std::map<std::string, std::ofstream> outs;
 
-      auto csv = std::ofstream (options.csv.string ());
-      if (options.output_awVd)
+      std::ofstream csv;
+      if (vm.count ("c"))
         {
-          printf ("writing awVd volumes to pdb\n");
-          outs[0] = std::ofstream (options.awVd_pdb_fname.string ());
-          outs[1] = std::ofstream (options.awVd_pdb_overlap_fname.string ());
+          csv = std::ofstream (vm["c"].as<std::string> ());
         }
-      if (options.output_awVd_areas)
+      else
         {
-          printf ("writing awVd surface areas to pdb\n");
-          outs[2] = std::ofstream (options.awVd_area_pdb_fname.string ());
-          outs[3]
-              = std::ofstream (options.awVd_interface_area_fname.string ());
-        }
-      if (options.output_curvature)
-        {
-          printf ("writing maximum_curvature to pdb\n");
-          outs[4] = std::ofstream (options.curvature_pdb_fname.string ());
-        }
-      if (options.output_power)
-        {
-          printf ("writing power volumes to pdb\n");
-          outs[5] = std::ofstream (options.power_pdb_fname.string ());
-          outs[6] = std::ofstream (options.power_pdb_overlap_fname.string ());
-        }
-      if (options.output_power_areas)
-        {
-          printf ("writing power surface areas to pdb\n");
-          outs[7] = std::ofstream (options.pow_area_pdb_fname.string ());
-          outs[8] = std::ofstream (options.pow_interface_area_fname.string ());
-        }
-      if (options.output_diff)
-        {
-          printf ("writing difference in volumes to pdb\n");
-          outs[9] = std::ofstream (options.diff_pdb_fname.string ());
-          outs[10] = std::ofstream (options.diff_pdb_overlap_fname.string ());
-        }
-      if (options.output_areas_diff)
-        {
-          printf ("writing difference in volumes to pdb\n");
-          outs[11] = std::ofstream (options.diff_area_pdb_fname.string ());
-          outs[12] = std::ofstream (
-              options.diff_area_pdb_interface_fname.string ());
+          csv = std::ofstream ("volumes.csv");
         }
 
-      // Keep track of the properties of each atom.
-      //
-      // awVd
-      // ---------------------------------------------
-      // prop_map[atom][0] = volume
-      // prop_map[atom][1] = overlap_volume
-      // prop_map[atom][2] = surface_area
-      // prop_map[atom][3] = interfacial_surface_area
-      // prop_map[atom][4] = maximum_curvature
-      //
-      // power
-      // ---------------------------------------------
-      // prop_map[atom][5] = volume
-      // prop_map[atom][6] = overlap_volume
-      // prop_map[atom][7] = surface_area
-      // prop_map[atom][8] = interfacial_surface_area
-      //
-      //
-      // percent difference from power diagram
-      // ---------------------------------------------
-      // prop_map[atom][9] = volume
-      // prop_map[atom][10] = overlap_volume
-      // prop_map[atom][11] = surface_area
-      // prop_map[atom][12] = interfacial_surface_area
-      std::map<const Atom *, std::array<double, 13> > prop_map;
+      if (vm.count ("vp"))
+        {
+          outs["vp"] = std::ofstream (vm["vp"].as<std::string> () == ""
+                                          ? "power_volumes.pdb"
+                                          : vm["vp"].as<std::string> ());
+        }
+      if (vm.count ("vv"))
+        {
+          outs["vv"] = std::ofstream (vm["vv"].as<std::string> () == ""
+                                          ? "awVd_volumes.pdb"
+                                          : vm["vv"].as<std::string> ());
+        }
+      if (vm.count ("vd"))
+        {
+          outs["vd"] = std::ofstream (vm["vd"].as<std::string> () == ""
+                                          ? "diff_volumes.pdb"
+                                          : vm["vd"].as<std::string> ());
+        }
+      if (vm.count ("op"))
+        {
+          outs["op"] = std::ofstream (vm["op"].as<std::string> () == ""
+                                          ? "power_overlap_volumes.pdb"
+                                          : vm["op"].as<std::string> ());
+        }
+      if (vm.count ("ov"))
+        {
+          outs["ov"] = std::ofstream (vm["ov"].as<std::string> () == ""
+                                          ? "awVd_overlap_volumes.pdb"
+                                          : vm["ov"].as<std::string> ());
+        }
+      if (vm.count ("od"))
+        {
+          outs["od"] = std::ofstream (vm["od"].as<std::string> () == ""
+                                          ? "diff_overlap_volumes.pdb"
+                                          : vm["od"].as<std::string> ());
+        }
+      if (vm.count ("ap"))
+        {
+          outs["ap"] = std::ofstream (vm["ap"].as<std::string> () == ""
+                                          ? "power_surface_areas.pdb"
+                                          : vm["ap"].as<std::string> ());
+        }
+      if (vm.count ("av"))
+        {
+          outs["av"] = std::ofstream (vm["av"].as<std::string> () == ""
+                                          ? "awVd_surface_areas.pdb"
+                                          : vm["av"].as<std::string> ());
+        }
+      if (vm.count ("ad"))
+        {
+          outs["ad"] = std::ofstream (vm["ad"].as<std::string> () == ""
+                                          ? "diff_surface_areas.pdb"
+                                          : vm["ad"].as<std::string> ());
+        }
+      if (vm.count ("ip"))
+        {
+          outs["ip"] = std::ofstream (vm["ip"].as<std::string> () == ""
+                                          ? "power_interface_areas.pdb"
+                                          : vm["ip"].as<std::string> ());
+        }
+      if (vm.count ("iv"))
+        {
+          outs["iv"] = std::ofstream (vm["iv"].as<std::string> () == ""
+                                          ? "awVd_interface_areas.pdb"
+                                          : vm["iv"].as<std::string> ());
+        }
+      if (vm.count ("id"))
+        {
+          outs["id"] = std::ofstream (vm["id"].as<std::string> () == ""
+                                          ? "diff_interface_areas.pdb"
+                                          : vm["id"].as<std::string> ());
+        }
+      if (vm.count ("k"))
+        {
+          outs["k"] = std::ofstream (vm["k"].as<std::string> () == ""
+                                         ? "max_curvature.pdb"
+                                         : vm["k"].as<std::string> ());
+        }
+      std::map<const Atom *, std::map<std::string, double> > prop_map;
+
+      // A map associating a quadruple of atoms with an empty sphere tangent to
+      // all 4 atoms. Key: {cx, cy, cz, r}
+      Voronoi_map voronoi_vertices;
 
       for (Atom_Iter it = model.atoms_begin (); it != model.atoms_end (); ++it)
         {
           std::array<double, 5> awVd_vol{ 0., 0., 0., 0., 0. };
-          if (it->residue_name () == "DA" || it->residue_name () == "DT"
-              || it->residue_name () == "DG" || it->residue_name () == "DC")
+          if (residues.find (it->residue_name ()) != residues.end ())
             {
-              awVd_vol = find_neighbors (model, *(it), density, options);
+              awVd_vol = find_neighbors (model, *(it), density, vm, residues,
+                                         voronoi_vertices);
             }
-          prop_map[&*it][0] = awVd_vol[0];
-          prop_map[&*it][1] = awVd_vol[1];
-          prop_map[&*it][2] = awVd_vol[2];
-          prop_map[&*it][3] = awVd_vol[3];
-          prop_map[&*it][4] = awVd_vol[4];
+          prop_map[&*it]["vv"] = awVd_vol[0];
+          prop_map[&*it]["ov"] = awVd_vol[1];
+          prop_map[&*it]["av"] = awVd_vol[2];
+          prop_map[&*it]["iv"] = awVd_vol[3];
+          prop_map[&*it]["k"] = awVd_vol[4];
         }
 
       Rt T;
@@ -411,69 +253,65 @@ main (int argc, const char **argv)
       for (Rt::Vertex_handle vh : T.finite_vertex_handles ())
         {
           std::array<double, 4> power_vol{ 0., 0., 0., 0. };
-          if (vh->info ()->residue_name () == "DA"
-              || vh->info ()->residue_name () == "DT"
-              || vh->info ()->residue_name () == "DG"
-              || vh->info ()->residue_name () == "DC")
+          if (residues.find (vh->info ()->residue_name ()) != residues.end ())
             {
-              power_vol = subdivide (vh, T, options);
+              power_vol = subdivide (vh, T, vm, residues);
             }
-          prop_map[vh->info ()][5] = power_vol[0];
-          prop_map[vh->info ()][6] = power_vol[1];
-          prop_map[vh->info ()][7] = power_vol[2];
-          prop_map[vh->info ()][8] = power_vol[3];
+          prop_map[vh->info ()]["vp"] = power_vol[0];
+          prop_map[vh->info ()]["op"] = power_vol[1];
+          prop_map[vh->info ()]["ap"] = power_vol[2];
+          prop_map[vh->info ()]["ip"] = power_vol[3];
         }
 
-      if (options.output_csv)
-        {
-          csv << "atom,awVd_volume,awVd_overlap_volume,awVd_surface_area,awVd_"
-                 "interfacial_surface_area,maximum_gaussian_curvature,power_"
-                 "volume,power_overlap_volume,power_surface_area,power_"
-                 "interfacial_surface_area,%diff_volume,%diff_overlap_"
-                 "volume,%diff_surface_area,%diff_interfacial_surface_area"
-              << std::endl;
-        }
+      outs["c"]
+          << "atom,awVd_volume,awVd_overlap_volume,awVd_surface_area,awVd_"
+             "interfacial_surface_area,maximum_gaussian_curvature,power_"
+             "volume,power_overlap_volume,power_surface_area,power_"
+             "interfacial_surface_area,%diff_volume,%diff_overlap_"
+             "volume,%diff_surface_area,%diff_interfacial_surface_area"
+          << std::endl;
       for (auto &atom_prop : prop_map)
         {
           auto &prop = atom_prop.second;
           auto atom = *atom_prop.first;
-          prop[9] = prop[5] != 0. ? ((prop[0] - prop[5]) / prop[5]) * 100. : 0.;
-          prop[10] = prop[6] != 0. ? ((prop[1] - prop[6]) / prop[6]) * 100. : 0.;
-          prop[11] = prop[7] != 0. ? ((prop[2] - prop[7]) / prop[7]) * 100. : 0.;
-          prop[12] = prop[8] != 0. ? ((prop[3] - prop[8]) / prop[8]) * 100. : 0.;
-          if (options.output_csv)
+          prop["vd"] = prop["vp"] != 0.
+                           ? ((prop["vv"] - prop["vp"]) / prop["vd"]) * 100.
+                           : 0.;
+          prop["od"] = prop["op"] != 0.
+                           ? ((prop["ov"] - prop["op"]) / prop["op"]) * 100.
+                           : 0.;
+          prop["ad"] = prop["ap"] != 0.
+                           ? ((prop["av"] - prop["ap"]) / prop["ap"]) * 100.
+                           : 0.;
+          prop["id"] = prop["ip"] != 0.
+                           ? ((prop["iv"] - prop["ip"]) / prop["ip"]) * 100.
+                           : 0.;
+          csv << atom.atom_name () << "_" << atom.residue_name () << "_"
+              << atom.atom_serial_number ();
+          for (auto &elem : outs)
             {
-              csv << atom.atom_name () << "_" << atom.residue_name () << "_"
-                  << atom.atom_serial_number ();
-            }
-          for (std::size_t i = 0; i < outs.size (); ++i)
-            {
-              atom.temperature_factor () = prop[i];
-              if (outs[i].is_open ())
+              const auto &key = elem.first;
+              atom.temperature_factor () = prop[key];
+              if (outs[key].is_open ())
                 {
-                  outs[i] << atom << std::endl;
+                  outs[key] << atom << std::endl;
                 }
-              if (options.output_csv)
-                {
-                  csv << "," << prop[i];
-                }
-            }
-          if (options.output_csv)
-            {
-              csv << std::endl;
+              csv << "," << prop[key];
             }
         }
-
-      for (auto &elem : outs)
+      if (vm["verts"].as<bool> ())
         {
-          if (elem.is_open ())
+          for (const auto &elem : voronoi_vertices)
             {
-              elem.close ();
+              const auto &atoms = elem.first;
+              const auto &point = elem.second;
+              for (const auto &atom : atoms)
+                {
+                  std::cout << atom->atom_serial_number () << ",";
+                }
+              std::cout << "\t" << point[0] << "," << point[1] << ","
+                        << point[2] << std::endl;
             }
-        }
-      if (csv.is_open ())
-        {
-          csv.close ();
         }
     }
 }

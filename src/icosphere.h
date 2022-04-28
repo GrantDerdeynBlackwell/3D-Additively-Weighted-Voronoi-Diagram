@@ -1,7 +1,6 @@
 #ifndef G_ICOSPHERE
 #define G_ICOSPHERE
 #include "typedefs.h"
-#include "parser.h"
 #include <CGAL/Aff_transformation_3.h>
 #include <CGAL/Eigen_vector.h>
 #include <CGAL/Polygon_mesh_processing/transform.h>

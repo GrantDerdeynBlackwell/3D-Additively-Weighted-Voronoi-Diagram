@@ -2,13 +2,13 @@
 #define G_BFS_FOR_VERT
 
 #include "icosphere.h"
-#include "parser.h"
 #include "typedefs.h"
 #include <Eigen/src/Core/Matrix.h>
 
 void bfs_for_vert (
     Icosphere &ico, Mesh::Edge_index s,
     Mesh::Property_map<vertex_descriptor, std::set<const Atom *> > &vcolor,
-    Mesh::Property_map<Mesh::Edge_index, bool> &evisited);
+    Mesh::Property_map<Mesh::Edge_index, bool> &evisited,
+    Voronoi_map &voronoi_vertices);
 
 #endif

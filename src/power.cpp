@@ -31,6 +31,7 @@
 
 #include <algorithm>
 #include <boost/graph/properties.hpp>
+#include <boost/program_options/variables_map.hpp>
 #include <cassert>
 #include <memory>
 #include <string>
@@ -38,18 +39,10 @@
 
 #include "/home/e5-2690/builds/overlap/overlap.hpp"
 #include "ESBTL/occupancy_handlers.h"
-#include "parser.h"
 #include "typedefs.h"
 
-// namespace ESBTL
-//{
-// std::ostream &
-// operator<< (std::ostream &os, const ESBTL::Default_system::Atom &atm)
-//{
-//  os << ESBTL::PDB::get_atom_pdb_format (atm);
-//  return os;
-//}
-//} // namespace ESBTL
+namespace po = boost::program_options;
+
 struct WeightedLessX
 {
   bool
@@ -197,7 +190,6 @@ link_to_fg_with_color (const Triangulation_3 &t,
 void
 mesh (const SubTri &T, const std::string &fname, const Atom *atom)
 {
-  printf ("meshing %s...\n", fname.c_str ());
   CGAL::Surface_mesh<EK::Point_3> m;
   link_to_fg_with_color (T, T.infinite_vertex (), m, atom, fname);
 }
@@ -222,9 +214,9 @@ power (const Model &model, Rt &T)
 }
 
 std::array<double, 4>
-subdivide (const Rt::Vertex_handle &vh, const Rt &T, Cmd_line_options &options)
+subdivide (const Rt::Vertex_handle &vh, const Rt &T,
+           const po::variables_map &vm, const std::set<std::string> &residues)
 {
-  const std::set<std::string> solute_resn{ "DT", "DA", "DG", "DC" };
   double vol = 0.;
   double overlap_vol = 0.;
   double area = 0.;
@@ -285,8 +277,7 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T, Cmd_line_options &options)
           bool interface_flag = false;
           for (const auto &elem : cell_color)
             {
-              if (solute_resn.find (elem->residue_name ())
-                  == solute_resn.end ())
+              if (residues.find (elem->residue_name ()) == residues.cend ())
                 {
                   interface_flag = true;
                 }
@@ -326,10 +317,9 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T, Cmd_line_options &options)
             }
         }
     }
-  if (options.mesh_power)
+  if (vm.count ("mp"))
     {
-      std::string fname{ options.power_mesh_dir.string () + "power_"
-                         + vh->info ()->atom_name () + "_"
+      std::string fname{ "outputs/power_" + vh->info ()->atom_name () + "_"
                          + std::to_string (vh->info ()->atom_serial_number ())
                          + ".off" };
       mesh (subtri, fname, vh->info ());

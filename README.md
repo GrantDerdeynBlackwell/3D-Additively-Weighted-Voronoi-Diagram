@@ -66,11 +66,6 @@ By default, a csv named volumes.csv is output to the current directory. The foll
 - ```-mp```: write an OFF mesh for power cell of the molecular structure. Names follow the format power_[ATOM-NAME]_[ATOM-SERIAL#].off
 - ```-mv```: write an OFF mesh for additively weighted cell of the molecular structure. Names follow the format awVd_[ATOM-NAME]_[ATOM-SERIAL#].off
 
-The filename of each flag besides the meshes can be changed by passing an additional argument after the flag.
-
-The ```-v*``` flag creates an additional pdb that contains the volume of the cell occupied by the atom. The difference between this volume and the total volume of the cell is also the empty volume of the cell.
-
-The ```-a*``` flag creates an additional pdb that contains the surface area of each cell that is in contact with another atom that is not part of a DNA strand.
 
 The radii associated with each atom can be changed by editing ```data/bondi_classifier.txt```.
 

@@ -3,7 +3,6 @@
 
 #include "icosphere.h"
 #include "typedefs.h"
-#include "parser.h"
 #include <Eigen/src/Core/Matrix.h>
 
 std::vector<Eigen::Matrix<NT, 3, 1> >

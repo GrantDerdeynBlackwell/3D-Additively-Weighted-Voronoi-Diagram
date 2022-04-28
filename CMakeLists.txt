@@ -9,7 +9,10 @@ set (CMAKE_CXX_FLAGS_RELEASE "-O3")
 # set the project name
 project(awVd_ray LANGUAGES CXX CUDA)
 
-find_package( Boost REQUIRED )
+# boost program_options uses std11 strings
+add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
+
+find_package( Boost COMPONENTS program_options REQUIRED)
 
 find_package( Eigen3 3.3 REQUIRED NO_MODULE)
 
@@ -54,4 +57,4 @@ add_executable(vdos
   ${PROJECT_SOURCE_DIR}/src/voronoi_mesh_details.cpp
   ${PROJECT_SOURCE_DIR}/src/bfs_for_vert.cpp)
 
-target_link_libraries(vdos PUBLIC CGAL::CGAL Eigen3::Eigen PRIVATE )
+target_link_libraries(vdos PUBLIC CGAL::CGAL Eigen3::Eigen PRIVATE Boost::program_options)

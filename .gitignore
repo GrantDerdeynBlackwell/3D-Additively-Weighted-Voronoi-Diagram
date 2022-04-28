@@ -28,3 +28,4 @@ CMakeCache.txt
 *.csv
 *.off
 *.png
+*.lck

@@ -5,10 +5,29 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	0.0.0	//
+$(VERBOSE).SILENT	Makefile	/^$(VERBOSE).SILENT:$/;"	t
+$(VERBOSE)MAKESILENT	Makefile	/^$(VERBOSE)MAKESILENT = -s$/;"	m
+%	Makefile	/^% : %,v$/;"	t
+%	Makefile	/^% : RCS\/%$/;"	t
+%	Makefile	/^% : RCS\/%,v$/;"	t
+%	Makefile	/^% : SCCS\/s.%$/;"	t
+%	Makefile	/^% : s.%$/;"	t
 Accept_none_occupancy_policy	src/typedefs.h	/^using Accept_none_occupancy_policy =$/;"	t	typeref:typename:ESBTL::Accept_none_occupancy_policy<ESBTL::PDB::Line_format<>>
 Atom	src/typedefs.h	/^using Atom = typename System::Atom;$/;"	t	typeref:typename:System::Atom
 Atom_Const_Iter	src/typedefs.h	/^using Atom_Const_Iter = typename Model::Atoms_const_iterator;$/;"	t	typeref:typename:Model::Atoms_const_iterator
 Atom_Iter	src/typedefs.h	/^using Atom_Iter = typename Model::Atoms_iterator;$/;"	t	typeref:typename:Model::Atoms_iterator
+CGAL_Qt5_moc_and_resources	Makefile	/^CGAL_Qt5_moc_and_resources: cmake_check_build_system$/;"	t
+CGAL_Qt5_moc_and_resources/fast	Makefile	/^CGAL_Qt5_moc_and_resources\/fast:$/;"	t
+CGAL_Qt5_moc_and_resources_autogen	Makefile	/^CGAL_Qt5_moc_and_resources_autogen: cmake_check_build_system$/;"	t
+CGAL_Qt5_moc_and_resources_autogen/fast	Makefile	/^CGAL_Qt5_moc_and_resources_autogen\/fast:$/;"	t
+CGAL_Qt5_moc_and_resources_autogen/mocs_compilation.cpp.i	Makefile	/^CGAL_Qt5_moc_and_resources_autogen\/mocs_compilation.cpp.i:$/;"	t
+CGAL_Qt5_moc_and_resources_autogen/mocs_compilation.cpp.o	Makefile	/^CGAL_Qt5_moc_and_resources_autogen\/mocs_compilation.cpp.o:$/;"	t
+CGAL_Qt5_moc_and_resources_autogen/mocs_compilation.cpp.s	Makefile	/^CGAL_Qt5_moc_and_resources_autogen\/mocs_compilation.cpp.s:$/;"	t
+CGAL_Qt5_moc_and_resources_autogen/mocs_compilation.i	Makefile	/^CGAL_Qt5_moc_and_resources_autogen\/mocs_compilation.i: CGAL_Qt5_moc_and_resources_autogen\/mocs/;"	t
+CGAL_Qt5_moc_and_resources_autogen/mocs_compilation.o	Makefile	/^CGAL_Qt5_moc_and_resources_autogen\/mocs_compilation.o: CGAL_Qt5_moc_and_resources_autogen\/mocs/;"	t
+CGAL_Qt5_moc_and_resources_autogen/mocs_compilation.s	Makefile	/^CGAL_Qt5_moc_and_resources_autogen\/mocs_compilation.s: CGAL_Qt5_moc_and_resources_autogen\/mocs/;"	t
+CMAKE_BINARY_DIR	Makefile	/^CMAKE_BINARY_DIR = \/home\/e5-2690\/builds\/Voronoi-Diagram-of-Spheres$/;"	m
+CMAKE_COMMAND	Makefile	/^CMAKE_COMMAND = \/opt\/cmake-3.21.4-linux-x86_64\/bin\/cmake$/;"	m
 CMAKE_CROSSCOMPILING	cmake_install.cmake	/^  set(CMAKE_CROSSCOMPILING "FALSE")$/;"	v
 CMAKE_CXX_FLAGS	CMakeLists.txt	/^set (CMAKE_CXX_FLAGS "-Wall -Wextra")$/;"	v
 CMAKE_CXX_FLAGS_DEBUG	CMakeLists.txt	/^set (CMAKE_CXX_FLAGS_DEBUG "-g -O0")$/;"	v
@@ -23,20 +42,20 @@ CMAKE_INSTALL_MANIFEST	cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "insta
 CMAKE_INSTALL_PREFIX	cmake_install.cmake	/^  set(CMAKE_INSTALL_PREFIX "\/usr\/local")$/;"	v
 CMAKE_INSTALL_SO_NO_EXE	cmake_install.cmake	/^  set(CMAKE_INSTALL_SO_NO_EXE "1")$/;"	v
 CMAKE_OBJDUMP	cmake_install.cmake	/^  set(CMAKE_OBJDUMP "\/usr\/bin\/objdump")$/;"	v
+CMAKE_SOURCE_DIR	Makefile	/^CMAKE_SOURCE_DIR = \/home\/e5-2690\/builds\/Voronoi-Diagram-of-Spheres$/;"	m
 CUTOFF	src/typedefs.h	/^#define CUTOFF /;"	d
 Cb0	src/typedefs.h	/^using Cb0 = typename CGAL::Regular_triangulation_cell_base_3<EK>;$/;"	t	typeref:typename:CGAL::Regular_triangulation_cell_base_3<EK>
 Cell_handle	src/power.cpp	/^  typedef typename Triangulation_3::Cell_handle Cell_handle;$/;"	t	function:link_to_fg_with_color	typeref:typename:Triangulation_3::Cell_handle	file:
-Cmd_line_options	src/parser.h	/^struct Cmd_line_options$/;"	s
 Color	src/awVd_ray.cpp	/^typedef CGAL::IO::Color Color;$/;"	t	typeref:typename:CGAL::IO::Color	file:
 Color	src/typedefs.h	/^typedef CGAL::IO::Color Color;$/;"	t	typeref:typename:CGAL::IO::Color
 EK	src/typedefs.h	/^using EK = typename CGAL::Exact_predicates_exact_constructions_kernel;$/;"	t	typeref:typename:CGAL::Exact_predicates_exact_constructions_kernel
 EPSILON	src/voronoi_mesh_details.cpp	/^#define EPSILON /;"	d	file:
+EQUALS	Makefile	/^EQUALS = =$/;"	m
 ESBTL	src/main.cpp	/^namespace ESBTL$/;"	n	file:
 G_AWVD_RAY	src/awVd_ray.h	/^#define G_AWVD_RAY$/;"	d
 G_BFS_FOR_VERT	src/bfs_for_vert.h	/^#define G_BFS_FOR_VERT$/;"	d
 G_COMPUTE_BISECTORS	src/compute_bisectors.h	/^#define G_COMPUTE_BISECTORS$/;"	d
 G_ICOSPHERE	src/icosphere.h	/^#define G_ICOSPHERE$/;"	d
-G_PARSER	src/parser.h	/^#define G_PARSER$/;"	d
 G_POWER	src/power.h	/^#define G_POWER$/;"	d
 G_RAY_INTERSECTIONS	src/ray_intersections.h	/^#define G_RAY_INTERSECTIONS$/;"	d
 G_TYPEDEFS	src/typedefs.h	/^#define G_TYPEDEFS$/;"	d
@@ -59,9 +78,11 @@ Mesh	src/typedefs.h	/^using Mesh = typename CGAL::Surface_mesh<K::Point_3>;$/;"	
 Model	src/typedefs.h	/^using Model = typename System::Model;$/;"	t	typeref:typename:System::Model
 NT	src/typedefs.h	/^using NT = double;$/;"	t	typeref:typename:double
 Point_3	src/power.cpp	/^  typedef Weighted_point Point_3;$/;"	t	struct:Weighted_SpatialSortingTraits	typeref:typename:Weighted_point	file:
+RM	Makefile	/^RM = \/opt\/cmake-3.21.4-linux-x86_64\/bin\/cmake -E rm -f$/;"	m
 RVertex_map	src/power.cpp	/^  typedef boost::unordered_map<vertex_descriptor, Vertex_handle> RVertex_map;$/;"	t	function:link_to_fg_with_color	typeref:typename:boost::unordered_map<vertex_descriptor,Vertex_handle>	file:
 Ray	src/typedefs.h	/^using Ray = typename Eigen::Vector3d;$/;"	t	typeref:typename:Eigen::Vector3d
 Rt	src/typedefs.h	/^using Rt = typename CGAL::Regular_triangulation_3<EK, Tds>;$/;"	t	typeref:typename:CGAL::Regular_triangulation_3<EK,Tds>
+SHELL	Makefile	/^SHELL = \/bin\/sh$/;"	m
 SubTri	src/typedefs.h	/^using SubTri = typename CGAL::Regular_triangulation_3<EK, Tds_vvert>;$/;"	t	typeref:typename:CGAL::Regular_triangulation_3<EK,Tds_vvert>
 System	src/typedefs.h	/^using System = typename ESBTL::Molecular_system<Items, K::Point_3>;$/;"	t	typeref:typename:ESBTL::Molecular_system<Items,K::Point_3>
 T_Atom_classifier	src/typedefs.h	/^using T_Atom_classifier =$/;"	t	typeref:typename:ESBTL::Generic_classifier<ESBTL::Radius_of_atom<NT,Atom>>
@@ -73,6 +94,7 @@ Vb0	src/typedefs.h	/^using Vb0 = typename CGAL::Regular_triangulation_vertex_bas
 Vb_vvert	src/typedefs.h	/^using Vb_vvert = typename CGAL::Triangulation_vertex_base_with_info_3<$/;"	t	typeref:typename:CGAL::Triangulation_vertex_base_with_info_3<std::array<const Atom *,4>,EK,Vb0>
 Vertex_handle	src/power.cpp	/^  typedef typename Triangulation_3::Vertex_handle Vertex_handle;$/;"	t	function:link_to_fg_with_color	typeref:typename:Triangulation_3::Vertex_handle	file:
 Vertex_map	src/power.cpp	/^  typedef boost::unordered_map<Vertex_handle, vertex_descriptor> Vertex_map;$/;"	t	function:link_to_fg_with_color	typeref:typename:boost::unordered_map<Vertex_handle,vertex_descriptor>	file:
+Voronoi_map	src/typedefs.h	/^using Voronoi_map = typename std::map<const std::array<const Atom *, 4>,$/;"	t	typeref:typename:std::map<const std::array<const Atom *,4>,const std::array<const double,4>>
 WeightedLessX	src/power.cpp	/^struct WeightedLessX$/;"	s	file:
 WeightedLessY	src/power.cpp	/^struct WeightedLessY$/;"	s	file:
 WeightedLessZ	src/power.cpp	/^struct WeightedLessZ$/;"	s	file:
@@ -84,18 +106,18 @@ _h	src/icosphere.h	/^  const Hyperbola_map &_h;$/;"	m	class:Icosphere	typeref:ty
 _radius	src/icosphere.h	/^  const NT _radius;$/;"	m	class:Icosphere	typeref:typename:const NT
 _subdivisions	src/icosphere.h	/^  const std::size_t _subdivisions;$/;"	m	class:Icosphere	typeref:typename:const std::size_t
 add_voronoi_curve	src/bfs_for_vert.cpp	/^add_voronoi_curve ($/;"	f	typeref:typename:void
+all	Makefile	/^all: cmake_check_build_system$/;"	t
 almost_equal	src/ray_intersections.cpp	/^almost_equal (double x, double y, std::size_t ulp)$/;"	f	typeref:typename:bool
 atom	src/icosphere.h	/^  atom () const$/;"	f	class:Icosphere	typeref:typename:const Atom &
-awVd_area_pdb_fname	src/parser.h	/^  std::filesystem::path awVd_area_pdb_fname{ ".\/awVd_areas.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-awVd_interface_area_fname	src/parser.h	/^  std::filesystem::path awVd_interface_area_fname{$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-awVd_mesh_dir	src/parser.h	/^  std::filesystem::path awVd_mesh_dir$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-awVd_pdb_fname	src/parser.h	/^  std::filesystem::path awVd_pdb_fname{ ".\/awVd_volumes.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-awVd_pdb_overlap_fname	src/parser.h	/^  std::filesystem::path awVd_pdb_overlap_fname{ ".\/awVd_volumes_overlap.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
 awVd_ray	CMakeLists.txt	/^project(awVd_ray LANGUAGES CXX CUDA)$/;"	p
 bfs_for_vert	src/bfs_for_vert.cpp	/^bfs_for_vert ($/;"	f	typeref:typename:void
 case_1	src/voronoi_mesh_details.cpp	/^case_1 (const Eigen::Matrix<NT, 3, 5> &abcdf)$/;"	f	typeref:typename:std::vector<Eigen::Matrix<NT,3,1>>
 case_2	src/voronoi_mesh_details.cpp	/^case_2 (Eigen::Matrix<NT, 3, 5> &abcdf)$/;"	f	typeref:typename:std::vector<Eigen::Matrix<NT,3,1>>
 center	src/icosphere.h	/^  center () const$/;"	f	class:Icosphere	typeref:typename:const K::Point_3
+clean	Makefile	/^clean:$/;"	t
+clean/fast	Makefile	/^clean\/fast: clean$/;"	t
+cmake_check_build_system	Makefile	/^cmake_check_build_system:$/;"	t
+cmake_force	Makefile	/^cmake_force:$/;"	t
 compute_bisector	src/compute_bisectors.cpp	/^compute_bisector (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
 compute_bisector_diff	src/compute_bisectors.cpp	/^compute_bisector_diff (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
 compute_bisector_same	src/compute_bisectors.cpp	/^compute_bisector_same (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
@@ -103,19 +125,17 @@ compute_curvature	src/awVd_ray.cpp	/^compute_curvature (const Hyperbola &h, cons
 compute_scalar_dist	src/ray_intersections.cpp	/^compute_scalar_dist (const Ray &ray, const Hyperbola_map &h, const Atom &atom)$/;"	f	typeref:typename:std::pair<NT,const Atom * >
 compute_scalar_dist_different_sizes	src/ray_intersections.cpp	/^compute_scalar_dist_different_sizes ($/;"	f	typeref:typename:double
 compute_scalar_dist_same_sizes	src/ray_intersections.cpp	/^compute_scalar_dist_same_sizes ($/;"	f	typeref:typename:NT
-compute_volume	src/awVd_ray.cpp	/^compute_volume (const Icosphere &ico)$/;"	f	typeref:typename:std::array<double,5>
+compute_volume	src/awVd_ray.cpp	/^compute_volume (const Icosphere &ico, const std::set<std::string> &residues)$/;"	f	typeref:typename:std::array<double,5>
 compute_voronoi_faces	src/awVd_ray.cpp	/^compute_voronoi_faces (Icosphere &icosphere)$/;"	f	typeref:typename:void
 compute_voronoi_vertex_rigorous	src/voronoi_mesh_details.cpp	/^compute_voronoi_vertex_rigorous (const Icosphere &ico,$/;"	f	typeref:typename:std::vector<Eigen::Matrix<NT,3,1>>
-compute_voronoi_vertices	src/awVd_ray.cpp	/^compute_voronoi_vertices (Icosphere &ico)$/;"	f	typeref:typename:void
+compute_voronoi_vertices	src/awVd_ray.cpp	/^compute_voronoi_vertices (Icosphere &ico, Voronoi_map &voronoi_vertices)$/;"	f	typeref:typename:void
 connect	src/awVd_ray.cpp	/^connect (Mesh::Halfedge_index h, Icosphere &ico)$/;"	f	typeref:typename:void
 connect_and_visit	src/bfs_for_vert.cpp	/^connect_and_visit (Mesh::Halfedge_index h, Icosphere &ico,$/;"	f	typeref:typename:void
-csv	src/parser.h	/^  std::filesystem::path csv{ "volumes.csv" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-curvature_pdb_fname	src/parser.h	/^  std::filesystem::path curvature_pdb_fname{ ".\/curvatures.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-diff_area_pdb_fname	src/parser.h	/^  std::filesystem::path diff_area_pdb_fname{ ".\/diff_areas.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-diff_area_pdb_interface_fname	src/parser.h	/^  std::filesystem::path diff_area_pdb_interface_fname{$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-diff_pdb_fname	src/parser.h	/^  std::filesystem::path diff_pdb_fname{ ".\/diff_volumes.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-diff_pdb_overlap_fname	src/parser.h	/^  std::filesystem::path diff_pdb_overlap_fname{ ".\/diff_volumes_overlap.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
+default_target	Makefile	/^default_target: all$/;"	t
+depend	Makefile	/^depend:$/;"	t
 double_to_NT	src/typedefs.h	/^using double_to_NT = typename CGAL::NT_converter<double, NT>;$/;"	t	typeref:typename:CGAL::NT_converter<double,NT>
+edit_cache	Makefile	/^edit_cache:$/;"	t
+edit_cache/fast	Makefile	/^edit_cache\/fast: edit_cache$/;"	t
 face_descriptor	src/power.cpp	/^  typedef typename boost::graph_traits<FG>::face_descriptor face_descriptor;$/;"	t	function:link_to_fg_with_color	typeref:typename:boost::graph_traits<FG>::face_descriptor	file:
 face_descriptor	src/typedefs.h	/^using face_descriptor = typename Mesh::Face_index;$/;"	t	typeref:typename:Mesh::Face_index
 face_has_v_vert	src/bfs_for_vert.cpp	/^face_has_v_vert ($/;"	f	typeref:typename:Mesh::Halfedge_index
@@ -126,6 +146,7 @@ find_voronoi_curves_along_mesh_edge	src/voronoi_mesh_details.cpp	/^find_voronoi_
 get_t_if_exists	src/bfs_for_vert.cpp	/^get_t_if_exists ($/;"	f	typeref:typename:std::pair<NT,const Atom * >
 h	src/icosphere.h	/^  h () const$/;"	f	class:Icosphere	typeref:typename:const Hyperbola_map &
 handle_voronoi_vertex	src/bfs_for_vert.cpp	/^handle_voronoi_vertex ($/;"	f	typeref:typename:bool
+help	Makefile	/^help:$/;"	t
 less_x_3_object	src/power.cpp	/^  less_x_3_object () const$/;"	f	struct:Weighted_SpatialSortingTraits	typeref:typename:Less_x_3	file:
 less_y_3_object	src/power.cpp	/^  less_y_3_object () const$/;"	f	struct:Weighted_SpatialSortingTraits	typeref:typename:Less_y_3	file:
 less_z_3_object	src/power.cpp	/^  less_z_3_object () const$/;"	f	struct:Weighted_SpatialSortingTraits	typeref:typename:Less_z_3	file:
@@ -133,33 +154,89 @@ link_to_fg_with_color	src/power.cpp	/^link_to_fg_with_color (const Triangulation
 m	src/icosphere.h	/^  Mesh m;$/;"	m	class:Icosphere	typeref:typename:Mesh
 main	src/main.cpp	/^main (int argc, const char **argv)$/;"	f	typeref:typename:int
 mesh	src/power.cpp	/^mesh (const SubTri &T, const std::string &fname, const Atom *atom)$/;"	f	typeref:typename:void
-mesh_awVd	src/parser.h	/^  bool mesh_awVd = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
 mesh_io_test	src/awVd_ray.cpp	/^mesh_io_test (Icosphere ico, const std::string &fname)$/;"	f	typeref:typename:void
-mesh_power	src/parser.h	/^  bool mesh_power = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
 operator () 	src/power.cpp	/^  operator() (const Weighted_point &p, const Weighted_point &q) const$/;"	f	struct:WeightedLessX	typeref:typename:bool	file:
 operator () 	src/power.cpp	/^  operator() (const Weighted_point &p, const Weighted_point &q) const$/;"	f	struct:WeightedLessY	typeref:typename:bool	file:
 operator () 	src/power.cpp	/^  operator() (const Weighted_point &p, const Weighted_point &q) const$/;"	f	struct:WeightedLessZ	typeref:typename:bool	file:
 operator <<	src/main.cpp	/^operator<< (std::ostream &os, const Atom &atm)$/;"	f	namespace:ESBTL	typeref:typename:std::ostream &
-output_areas_diff	src/parser.h	/^  bool output_areas_diff = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-output_awVd	src/parser.h	/^  bool output_awVd = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-output_awVd_areas	src/parser.h	/^  bool output_awVd_areas = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-output_csv	src/parser.h	/^  bool output_csv = true;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-output_curvature	src/parser.h	/^  bool output_curvature = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-output_diff	src/parser.h	/^  bool output_diff = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-output_power	src/parser.h	/^  bool output_power = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-output_power_areas	src/parser.h	/^  bool output_power_areas = false;$/;"	m	struct:Cmd_line_options	typeref:typename:bool
-parser	src/main.cpp	/^parser (int argc, const char **argv, Cmd_line_options &options)$/;"	f	typeref:typename:void
-pow_area_pdb_fname	src/parser.h	/^  std::filesystem::path pow_area_pdb_fname{ ".\/power_surface_areas.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-pow_interface_area_fname	src/parser.h	/^  std::filesystem::path pow_interface_area_fname{$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
 power	src/power.cpp	/^power (const Model &model, Rt &T)$/;"	f	typeref:typename:void
-power_mesh_dir	src/parser.h	/^  std::filesystem::path power_mesh_dir$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-power_pdb_fname	src/parser.h	/^  std::filesystem::path power_pdb_fname{ ".\/power_volumes.pdb" };$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
-power_pdb_overlap_fname	src/parser.h	/^  std::filesystem::path power_pdb_overlap_fname{$/;"	m	struct:Cmd_line_options	typeref:typename:std::filesystem::path
+preinstall	Makefile	/^preinstall: all$/;"	t
+preinstall/fast	Makefile	/^preinstall\/fast:$/;"	t
+qrc_CGAL.cpp.i	Makefile	/^qrc_CGAL.cpp.i:$/;"	t
+qrc_CGAL.cpp.o	Makefile	/^qrc_CGAL.cpp.o:$/;"	t
+qrc_CGAL.cpp.s	Makefile	/^qrc_CGAL.cpp.s:$/;"	t
+qrc_CGAL.i	Makefile	/^qrc_CGAL.i: qrc_CGAL.cpp.i$/;"	t
+qrc_CGAL.o	Makefile	/^qrc_CGAL.o: qrc_CGAL.cpp.o$/;"	t
+qrc_CGAL.s	Makefile	/^qrc_CGAL.s: qrc_CGAL.cpp.s$/;"	t
+qrc_File.cpp.i	Makefile	/^qrc_File.cpp.i:$/;"	t
+qrc_File.cpp.o	Makefile	/^qrc_File.cpp.o:$/;"	t
+qrc_File.cpp.s	Makefile	/^qrc_File.cpp.s:$/;"	t
+qrc_File.i	Makefile	/^qrc_File.i: qrc_File.cpp.i$/;"	t
+qrc_File.o	Makefile	/^qrc_File.o: qrc_File.cpp.o$/;"	t
+qrc_File.s	Makefile	/^qrc_File.s: qrc_File.cpp.s$/;"	t
+qrc_Input.cpp.i	Makefile	/^qrc_Input.cpp.i:$/;"	t
+qrc_Input.cpp.o	Makefile	/^qrc_Input.cpp.o:$/;"	t
+qrc_Input.cpp.s	Makefile	/^qrc_Input.cpp.s:$/;"	t
+qrc_Input.i	Makefile	/^qrc_Input.i: qrc_Input.cpp.i$/;"	t
+qrc_Input.o	Makefile	/^qrc_Input.o: qrc_Input.cpp.o$/;"	t
+qrc_Input.s	Makefile	/^qrc_Input.s: qrc_Input.cpp.s$/;"	t
+qrc_Triangulation_2.cpp.i	Makefile	/^qrc_Triangulation_2.cpp.i:$/;"	t
+qrc_Triangulation_2.cpp.o	Makefile	/^qrc_Triangulation_2.cpp.o:$/;"	t
+qrc_Triangulation_2.cpp.s	Makefile	/^qrc_Triangulation_2.cpp.s:$/;"	t
+qrc_Triangulation_2.i	Makefile	/^qrc_Triangulation_2.i: qrc_Triangulation_2.cpp.i$/;"	t
+qrc_Triangulation_2.o	Makefile	/^qrc_Triangulation_2.o: qrc_Triangulation_2.cpp.o$/;"	t
+qrc_Triangulation_2.s	Makefile	/^qrc_Triangulation_2.s: qrc_Triangulation_2.cpp.s$/;"	t
 radius	src/icosphere.h	/^  radius () const$/;"	f	class:Icosphere	typeref:typename:double
-subdivide	src/power.cpp	/^subdivide (const Rt::Vertex_handle &vh, const Rt &T, Cmd_line_options &options)$/;"	f	typeref:typename:std::array<double,4>
+rebuild_cache	Makefile	/^rebuild_cache:$/;"	t
+rebuild_cache/fast	Makefile	/^rebuild_cache\/fast: rebuild_cache$/;"	t
+src/awVd_ray.cpp.i	Makefile	/^src\/awVd_ray.cpp.i:$/;"	t
+src/awVd_ray.cpp.o	Makefile	/^src\/awVd_ray.cpp.o:$/;"	t
+src/awVd_ray.cpp.s	Makefile	/^src\/awVd_ray.cpp.s:$/;"	t
+src/awVd_ray.i	Makefile	/^src\/awVd_ray.i: src\/awVd_ray.cpp.i$/;"	t
+src/awVd_ray.o	Makefile	/^src\/awVd_ray.o: src\/awVd_ray.cpp.o$/;"	t
+src/awVd_ray.s	Makefile	/^src\/awVd_ray.s: src\/awVd_ray.cpp.s$/;"	t
+src/bfs_for_vert.cpp.i	Makefile	/^src\/bfs_for_vert.cpp.i:$/;"	t
+src/bfs_for_vert.cpp.o	Makefile	/^src\/bfs_for_vert.cpp.o:$/;"	t
+src/bfs_for_vert.cpp.s	Makefile	/^src\/bfs_for_vert.cpp.s:$/;"	t
+src/bfs_for_vert.i	Makefile	/^src\/bfs_for_vert.i: src\/bfs_for_vert.cpp.i$/;"	t
+src/bfs_for_vert.o	Makefile	/^src\/bfs_for_vert.o: src\/bfs_for_vert.cpp.o$/;"	t
+src/bfs_for_vert.s	Makefile	/^src\/bfs_for_vert.s: src\/bfs_for_vert.cpp.s$/;"	t
+src/compute_bisectors.cpp.i	Makefile	/^src\/compute_bisectors.cpp.i:$/;"	t
+src/compute_bisectors.cpp.o	Makefile	/^src\/compute_bisectors.cpp.o:$/;"	t
+src/compute_bisectors.cpp.s	Makefile	/^src\/compute_bisectors.cpp.s:$/;"	t
+src/compute_bisectors.i	Makefile	/^src\/compute_bisectors.i: src\/compute_bisectors.cpp.i$/;"	t
+src/compute_bisectors.o	Makefile	/^src\/compute_bisectors.o: src\/compute_bisectors.cpp.o$/;"	t
+src/compute_bisectors.s	Makefile	/^src\/compute_bisectors.s: src\/compute_bisectors.cpp.s$/;"	t
+src/main.cpp.i	Makefile	/^src\/main.cpp.i:$/;"	t
+src/main.cpp.o	Makefile	/^src\/main.cpp.o:$/;"	t
+src/main.cpp.s	Makefile	/^src\/main.cpp.s:$/;"	t
+src/main.i	Makefile	/^src\/main.i: src\/main.cpp.i$/;"	t
+src/main.o	Makefile	/^src\/main.o: src\/main.cpp.o$/;"	t
+src/main.s	Makefile	/^src\/main.s: src\/main.cpp.s$/;"	t
+src/power.cpp.i	Makefile	/^src\/power.cpp.i:$/;"	t
+src/power.cpp.o	Makefile	/^src\/power.cpp.o:$/;"	t
+src/power.cpp.s	Makefile	/^src\/power.cpp.s:$/;"	t
+src/power.i	Makefile	/^src\/power.i: src\/power.cpp.i$/;"	t
+src/power.o	Makefile	/^src\/power.o: src\/power.cpp.o$/;"	t
+src/power.s	Makefile	/^src\/power.s: src\/power.cpp.s$/;"	t
+src/ray_intersections.cpp.i	Makefile	/^src\/ray_intersections.cpp.i:$/;"	t
+src/ray_intersections.cpp.o	Makefile	/^src\/ray_intersections.cpp.o:$/;"	t
+src/ray_intersections.cpp.s	Makefile	/^src\/ray_intersections.cpp.s:$/;"	t
+src/ray_intersections.i	Makefile	/^src\/ray_intersections.i: src\/ray_intersections.cpp.i$/;"	t
+src/ray_intersections.o	Makefile	/^src\/ray_intersections.o: src\/ray_intersections.cpp.o$/;"	t
+src/ray_intersections.s	Makefile	/^src\/ray_intersections.s: src\/ray_intersections.cpp.s$/;"	t
+src/voronoi_mesh_details.cpp.i	Makefile	/^src\/voronoi_mesh_details.cpp.i:$/;"	t
+src/voronoi_mesh_details.cpp.o	Makefile	/^src\/voronoi_mesh_details.cpp.o:$/;"	t
+src/voronoi_mesh_details.cpp.s	Makefile	/^src\/voronoi_mesh_details.cpp.s:$/;"	t
+src/voronoi_mesh_details.i	Makefile	/^src\/voronoi_mesh_details.i: src\/voronoi_mesh_details.cpp.i$/;"	t
+src/voronoi_mesh_details.o	Makefile	/^src\/voronoi_mesh_details.o: src\/voronoi_mesh_details.cpp.o$/;"	t
+src/voronoi_mesh_details.s	Makefile	/^src\/voronoi_mesh_details.s: src\/voronoi_mesh_details.cpp.s$/;"	t
+subdivide	src/power.cpp	/^subdivide (const Rt::Vertex_handle &vh, const Rt &T,$/;"	f	typeref:typename:std::array<double,4>
 subdivisions	src/icosphere.h	/^  subdivisions () const$/;"	f	class:Icosphere	typeref:typename:std::size_t
 trace_out_edge	src/bfs_for_vert.cpp	/^trace_out_edge ($/;"	f	typeref:typename:void
 try_to_add_vert	src/bfs_for_vert.cpp	/^try_to_add_vert ($/;"	f	typeref:typename:Mesh::Halfedge_index
 vdos	CMakeLists.txt	/^add_executable(vdos$/;"	t
+vdos	Makefile	/^vdos: cmake_check_build_system$/;"	t
+vdos/fast	Makefile	/^vdos\/fast:$/;"	t
 vertex_descriptor	src/power.cpp	/^      typename boost::graph_traits<FG>::vertex_descriptor vertex_descriptor;$/;"	t	function:link_to_fg_with_color	typeref:typename:boost::graph_traits<FG>::vertex_descriptor	file:
 vertex_descriptor	src/typedefs.h	/^using vertex_descriptor = typename Mesh::Vertex_index;$/;"	t	typeref:typename:Mesh::Vertex_index
