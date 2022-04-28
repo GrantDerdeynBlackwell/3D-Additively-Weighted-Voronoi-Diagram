@@ -53,18 +53,39 @@ FILENAME is the filename of the pdb you wish to analyze.
 
 SUBDIVISIONS controls the density of the ray sampling. A higher number will produce a better approximation. We have found that 2 subdivions is a good trade-off between speed and accuracy.
 
+By default, vdos only computes the power or awVd cells of atoms whose belong to the following residues:
+
+    DA,  DG,  DT,  DC,  ALA, ARG, ASN, ASP, ASX,
+    
+    CYS, CYX, GLU, GLN, GLX, GLY, HIS, ILE, LEU,
+    
+    LYS, MET, PHE, PRO, SER, THR, TRP, TYR, VAL
+    
+To change this behavior, use the ```--ra``` flag to add residue names or the ```--rs``` to subtract residue names. For example, to include residues name NA, CL, K, & BR, and exlcude residues named DC & DT:
+
+```bash
+./vdos example.pdb 2 --ra NA CL K BR --rs DC DT
+```
+
 By default, a csv named volumes.csv is output to the current directory. The following flags can be used to change the output behavior:
 
-- ```-vp```: output a pdb where the temperature factor of each atom is the volume of its power cell.
-- ```-vv```: output a pdb where the temperature factor of each atom is the volume of its additively weighted cell.
-- ```-vd```: output a pdb where the temperature factor of each atom is the percent difference in the volume of its additively weighted cell from the volume of its power cell. (V<sub>aw</sub> - V<sub>p</sub>)/V<sub>p</sub>
-- ```-ap```: output a pdb where the temperature factor of each atom is the surface area of its power cell.
-- ```-av```: output a pdb where the temperature factor of each atom is the surface area of its additively weighted cell.
-- ```-ad```: output a pdb where the temperature factor of each atom is the percent difference in the volume of its additively weighted cell from the volume of its power cell. (A<sub>aw</sub> - A<sub>p</sub>)/A<sub>p</sub>
+- ```--vp```: output a pdb where the temperature factor of each atom is the volume of its power cell. Default: power_volumes.pdb
+- ```--vv```: output a pdb where the temperature factor of each atom is the volume of its additively weighted cell. Default: awVd_volumes.pdb
+- ```--vd```: output a pdb where the temperature factor of each atom is the percent difference in the volume of its additively weighted cell from the volume of its power cell. (V<sub>aw</sub> - V<sub>p</sub>)/V<sub>p</sub> Default: diff_volumes.pdb
+- ```--op```: output a pdb where the temperature factor of each atom is the volume of its power cell occupied by an atom. Default: power_overlap_volumes.pdb
+- ```--ov```: output a pdb where the temperature factor of each atom is the volume of its awVd cell occupied by an atom. Default: awVd_overlap_volumes.pdb
+- ```--od```: output a pdb where the temperature factor of each atom is the percent difference in the volume of its power cell occupied by an atom from the volume of its awVd cell occupied by an atom. Default: diff_overlap_volumes.pdb
+- ```--ap```: output a pdb where the temperature factor of each atom is the surface area of its power cell.
+- ```--av```: output a pdb where the temperature factor of each atom is the surface area of its additively weighted cell.
+- ```--ad```: output a pdb where the temperature factor of each atom is the percent difference in the volume of its additively weighted cell from the volume of its power cell. (A<sub>aw</sub> - A<sub>p</sub>)/A<sub>p</sub>
+- ```--ip```: output a pdb where the temperature factor of each atom is the sum of the surface area of each face of the power cell at an interface. That is, each face between an atom in the residue_list and an atom not in the residue_list.
+- ```--iv```: output a pdb where the temperature factor of each atom is the sum of the surface area of each face of the awVd cell at an interface. That is, each face between an atom in the residue_list and an atom not in the residue_list.
+- ```--id```: output a pdb where the temperature factor of each atom is percent difference of the interfacial area of its awVd cell from its power cell.
 - ```-k ```: output a pdb where the temperature factor of each atom is the maximum Gaussian curvature of the surface of its additively weighted cell.
 - ```-c ```: change the name of the .csv
-- ```-mp```: write an OFF mesh for power cell of the molecular structure. Names follow the format power_[ATOM-NAME]_[ATOM-SERIAL#].off
-- ```-mv```: write an OFF mesh for additively weighted cell of the molecular structure. Names follow the format awVd_[ATOM-NAME]_[ATOM-SERIAL#].off
+- ```--verts```: output the vertices of the awVd to stdout in the format {a1, a2, a3, a4, x, y, z}
+- ```--mp```: write an OFF mesh for power cell of the molecular structure. Names follow the format power_[ATOM-NAME]_[ATOM-SERIAL#].off
+- ```--mv```: write an OFF mesh for additively weighted cell of the molecular structure. Names follow the format awVd_[ATOM-NAME]_[ATOM-SERIAL#].off
 
 
 The radii associated with each atom can be changed by editing ```data/bondi_classifier.txt```.
