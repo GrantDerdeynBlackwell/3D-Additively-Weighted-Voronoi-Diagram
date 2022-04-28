@@ -304,13 +304,16 @@ main (int argc, const char **argv)
           for (const auto &elem : voronoi_vertices)
             {
               const auto &atoms = elem.first;
-              const auto &point = elem.second;
-              for (const auto &atom : atoms)
+              const auto &points = elem.second;
+              for (const auto &point : points)
                 {
-                  std::cout << atom->atom_serial_number () << ",";
+                  for (const auto &atom : atoms)
+                    {
+                      std::cout << atom->atom_serial_number () << ",";
+                    }
+                  std::cout << "\t" << point[0] << "," << point[1] << ","
+                            << point[2] << std::endl;
                 }
-              std::cout << "\t" << point[0] << "," << point[1] << ","
-                        << point[2] << std::endl;
             }
         }
     }

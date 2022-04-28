@@ -39,6 +39,38 @@
 using namespace std;
 
 void
+store_voronoi_vertex (const Icosphere &ico, Voronoi_map &voronoi_vertices,
+                      const std::array<const Atom *, 4> &v, const Eigen::Vector3d &v_vert)
+{
+  auto x = v_vert[0] * ico.radius () + ico.center ()[0];
+  auto y = v_vert[1] * ico.radius () + ico.center ()[1];
+  auto z = v_vert[2] * ico.radius () + ico.center ()[2];
+  auto ok = voronoi_vertices.insert ({ v, { { x, y, z, 0. } } });
+
+  if (!ok.second)
+    {
+      // In some situations, the same atoms can have 2 Voronoi
+      // vertices. I use a very lax interval (1e-5) because the
+      // vertices are the results of linear algebra calculations
+      // and they are multiplied.
+      auto &points = ok.first->second;
+      bool is_present = false;
+      for (const auto &point : points)
+        {
+          if (fabs (point[0] - x) < 1e-5 && fabs (point[1] - y) < 1e-5
+              && fabs (point[2] - z) < 1e-5)
+            {
+              is_present = true;
+            }
+        }
+      if (!is_present)
+        {
+          points.push_back ({ x, y, z, 0. });
+        }
+    }
+}
+
+void
 connect_and_visit (Mesh::Halfedge_index h, Icosphere &ico,
                    Mesh::Property_map<Mesh::Edge_index, bool> &evisited)
 {
@@ -85,7 +117,7 @@ get_t_if_exists (
     Mesh::Property_map<vertex_descriptor, std::set<const Atom *> > &vcolor,
     Mesh::Property_map<Mesh::Edge_index, bool> &evisited,
     const Eigen::Matrix<NT, 3, 1> &v_normal, NT v_norm,
-    const std::array<const Atom *, 3> atoms)
+    const std::array<const Atom *, 3> atoms, Voronoi_map &voronoi_vertices)
 {
   K::Plane_3 plane{ -v_normal[0], -v_normal[1], -v_normal[2], v_norm };
   CGAL::Polygon_2<K> poly;
@@ -114,6 +146,10 @@ get_t_if_exists (
           vcolor[ico.m.target (h_edge)].insert (atoms.cbegin (),
                                                 atoms.cend ());
 
+          std::array<const Atom *, 4> v{ atoms[0], atoms[1], atoms[2],
+                                         &ico.atom () };
+          std::sort (v.begin (), v.end ());
+          store_voronoi_vertex (ico, voronoi_vertices, v, {v_x, v_y, v_z});
           for (auto hat : ico.m.halfedges_around_target (h_edge))
             {
               connect_and_visit (hat, ico, evisited);
@@ -160,12 +196,14 @@ try_to_add_vert (
     const std::array<const Atom *, 3> atoms,
     Mesh::Property_map<vertex_descriptor, std::set<const Atom *> > &vcolor,
     Mesh::Property_map<Mesh::Edge_index, bool> &evisited,
-    Mesh::Halfedge_index h, std::vector<const Atom *> &backups)
+    Mesh::Halfedge_index h, std::vector<const Atom *> &backups,
+    Voronoi_map &voronoi_vertices)
 {
   NT v_norm = v_vert.norm ();
   Eigen::Matrix<NT, 3, 1> v_normal = v_vert.normalized ();
 
-  auto t = get_t_if_exists (ico, h, vcolor, evisited, v_normal, v_norm, atoms);
+  auto t = get_t_if_exists (ico, h, vcolor, evisited, v_normal, v_norm, atoms,
+                            voronoi_vertices);
 
   if (t.second == nullptr)
     {
@@ -206,7 +244,7 @@ handle_voronoi_vertex (
   // Something is wrong. Just return and deal with it later.
   if (trys > 1000)
     {
-      return ok;
+      // return ok;
     }
 
   auto v_verts = compute_voronoi_vertex_rigorous (ico, atoms);
@@ -225,21 +263,21 @@ handle_voronoi_vertex (
         {
           const auto heval = ico.m.halfedge (feval);
           auto nv = try_to_add_vert (v_vert, ico, atoms, vcolor, evisited,
-                                     heval, backups);
+                                     heval, backups, voronoi_vertices);
           if (nv != Mesh::null_halfedge ())
             {
               ok = true;
               std::array<const Atom *, 4> v{ curve_colors[0], curve_colors[1],
                                              new_color, &ico.atom () };
               std::sort (v.begin (), v.end ());
-              voronoi_vertices.insert (
-                  { v,
-                    { v_vert[0] * ico.radius () + ico.center ()[0],
-                      v_vert[1] * ico.radius () + ico.center ()[1],
-                      v_vert[2] * ico.radius () + ico.center ()[2], 0. } });
+
+
+              store_voronoi_vertex (ico, voronoi_vertices, v, v_vert);
+
               auto faces_around_nv = ico.m.faces_around_target (nv);
-              // If a Voronoi vertex was added, there are now new triangles.
-              // We add them to f_range so they can be evaluated as well.
+              // If a Voronoi vertex was added, there are now new
+              // triangles. We add them to f_range so they can be evaluated
+              // as well.
               f_range.insert (faces_around_nv.begin (),
                               faces_around_nv.end ());
               break;
@@ -357,8 +395,8 @@ trace_out_edge (
                         .normalized ();
               t = compute_scalar_dist (vci_norm, ico.h (), ico.atom ());
 
-              // If this curve is covered by another face, then that means the
-              // vertex must lie in this triangle.
+              // If this curve is covered by another face, then that means
+              // the vertex must lie in this triangle.
               if (std::find (curve_colors.cbegin (), curve_colors.cend (),
                              t.second)
                   == curve_colors.cend ())

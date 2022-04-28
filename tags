@@ -36,7 +36,7 @@ CMAKE_CXX_FLAGS_RELWITHDEBUGINFO	CMakeLists.txt	/^set (CMAKE_CXX_FLAGS_RELWITHDE
 CMAKE_CXX_STANDARD	CMakeLists.txt	/^set (CMAKE_CXX_STANDARD 17)$/;"	v
 CMAKE_INSTALL_COMPONENT	cmake_install.cmake	/^    set(CMAKE_INSTALL_COMPONENT "${COMPONENT}")$/;"	v
 CMAKE_INSTALL_COMPONENT	cmake_install.cmake	/^    set(CMAKE_INSTALL_COMPONENT)$/;"	v
-CMAKE_INSTALL_CONFIG_NAME	cmake_install.cmake	/^    set(CMAKE_INSTALL_CONFIG_NAME "Release")$/;"	v
+CMAKE_INSTALL_CONFIG_NAME	cmake_install.cmake	/^    set(CMAKE_INSTALL_CONFIG_NAME "Debug")$/;"	v
 CMAKE_INSTALL_MANIFEST	cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")$/;"	v
 CMAKE_INSTALL_MANIFEST	cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")$/;"	v
 CMAKE_INSTALL_PREFIX	cmake_install.cmake	/^  set(CMAKE_INSTALL_PREFIX "\/usr\/local")$/;"	v
@@ -94,7 +94,7 @@ Vb0	src/typedefs.h	/^using Vb0 = typename CGAL::Regular_triangulation_vertex_bas
 Vb_vvert	src/typedefs.h	/^using Vb_vvert = typename CGAL::Triangulation_vertex_base_with_info_3<$/;"	t	typeref:typename:CGAL::Triangulation_vertex_base_with_info_3<std::array<const Atom *,4>,EK,Vb0>
 Vertex_handle	src/power.cpp	/^  typedef typename Triangulation_3::Vertex_handle Vertex_handle;$/;"	t	function:link_to_fg_with_color	typeref:typename:Triangulation_3::Vertex_handle	file:
 Vertex_map	src/power.cpp	/^  typedef boost::unordered_map<Vertex_handle, vertex_descriptor> Vertex_map;$/;"	t	function:link_to_fg_with_color	typeref:typename:boost::unordered_map<Vertex_handle,vertex_descriptor>	file:
-Voronoi_map	src/typedefs.h	/^using Voronoi_map = typename std::map<const std::array<const Atom *, 4>,$/;"	t	typeref:typename:std::map<const std::array<const Atom *,4>,const std::array<const double,4>>
+Voronoi_map	src/typedefs.h	/^using Voronoi_map =$/;"	t
 WeightedLessX	src/power.cpp	/^struct WeightedLessX$/;"	s	file:
 WeightedLessY	src/power.cpp	/^struct WeightedLessY$/;"	s	file:
 WeightedLessZ	src/power.cpp	/^struct WeightedLessZ$/;"	s	file:
@@ -231,6 +231,7 @@ src/voronoi_mesh_details.cpp.s	Makefile	/^src\/voronoi_mesh_details.cpp.s:$/;"	t
 src/voronoi_mesh_details.i	Makefile	/^src\/voronoi_mesh_details.i: src\/voronoi_mesh_details.cpp.i$/;"	t
 src/voronoi_mesh_details.o	Makefile	/^src\/voronoi_mesh_details.o: src\/voronoi_mesh_details.cpp.o$/;"	t
 src/voronoi_mesh_details.s	Makefile	/^src\/voronoi_mesh_details.s: src\/voronoi_mesh_details.cpp.s$/;"	t
+store_voronoi_vertex	src/bfs_for_vert.cpp	/^store_voronoi_vertex (const Icosphere &ico, Voronoi_map &voronoi_vertices,$/;"	f	typeref:typename:void
 subdivide	src/power.cpp	/^subdivide (const Rt::Vertex_handle &vh, const Rt &T,$/;"	f	typeref:typename:std::array<double,4>
 subdivisions	src/icosphere.h	/^  subdivisions () const$/;"	f	class:Icosphere	typeref:typename:std::size_t
 trace_out_edge	src/bfs_for_vert.cpp	/^trace_out_edge ($/;"	f	typeref:typename:void

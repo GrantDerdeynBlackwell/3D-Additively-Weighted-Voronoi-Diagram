@@ -235,7 +235,10 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T,
                                           cell->vertex (3)->info () };
 
       std::sort (colors.begin (), colors.end ());
+      if(!T.is_infinite(cell))
+      {
       poly_points.push_back ({ { T.dual (cell), 1. }, colors });
+      }
     }
   SubTri subtri{ poly_points.begin (), poly_points.end () };
 

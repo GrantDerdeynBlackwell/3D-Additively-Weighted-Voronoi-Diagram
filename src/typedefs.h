@@ -83,8 +83,9 @@ using Accept_none_occupancy_policy =
 const T_Atom_classifier G_atom_classifier ("./data/bondi_classifier.txt");
 const double_to_NT G_double_to_NT;
 
-using Voronoi_map = typename std::map<const std::array<const Atom *, 4>,
-                                      const std::array<const double, 4> >;
+using Voronoi_map =
+    typename std::map<const std::array<const Atom *, 4>,
+                      std::vector<std::array<const double, 4> > >;
 
 // using K = typename CGAL::Simple_cartesian<double>;
 using Mesh = typename CGAL::Surface_mesh<K::Point_3>;

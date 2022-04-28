@@ -327,6 +327,38 @@ compute_voronoi_vertices (Icosphere &ico, Voronoi_map &voronoi_vertices)
             }
           else
             {
+              // There is one final edge case if both ends of the edge happen
+              // to be Voronoi vertices. If the third vertex of the face is
+              // also a vertex, then there is no way to reveal any Voronoi
+              // vertices within the face.
+              if (vcolor.first[ico.m.vertex (*eit, 0)].size () == 3
+                  && vcolor.first[ico.m.vertex (*eit, 1)].size () == 3)
+                {
+                  std::vector<const Atom *> sym_diff;
+                  std::set_symmetric_difference (
+                      vcolor.first[ico.m.vertex (*eit, 0)].begin (),
+                      vcolor.first[ico.m.vertex (*eit, 0)].end (),
+                      vcolor.first[ico.m.vertex (*eit, 1)].begin (),
+                      vcolor.first[ico.m.vertex (*eit, 1)].end (),
+                      std::inserter (sym_diff, sym_diff.end ()));
+                  if (sym_diff.size () == 2)
+                    {
+                      const std::array<const Atom *, 2> curve_colors{
+                        sym_diff[0], sym_diff[1]
+                      };
+                      for (const int i : { 0, 1 })
+                        {
+                          for (const Atom *new_color : intersect)
+                            {
+                              int trys{0};
+                              handle_voronoi_vertex (
+                                  ico, curve_colors, new_color, vcolor.first,
+                                  evisited.first, ico.m.halfedge (*eit, i), trys,
+                                  voronoi_vertices);
+                            }
+                        }
+                    }
+                }
               break;
             }
         }

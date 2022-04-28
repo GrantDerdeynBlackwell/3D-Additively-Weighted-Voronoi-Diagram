@@ -321,7 +321,6 @@ compute_voronoi_vertex_rigorous (const Icosphere &ico,
   else if (rank_abc == 1 && rank_abcd == 1 && rank_abcdf == 1)
     {
     }
-  assert (!ret.empty ());
   return ret;
 }
 
