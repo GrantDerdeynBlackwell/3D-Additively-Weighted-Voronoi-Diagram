@@ -53,6 +53,8 @@ FILENAME is the filename of the pdb you wish to analyze.
 
 SUBDIVISIONS controls the density of the ray sampling. A higher number will produce a better approximation. We have found that 2 subdivions is a good trade-off between speed and accuracy.
 
+### Include/Exclude
+
 By default, vdos only computes the power or awVd cells of atoms whose belong to the following residues:
 
     DA,  DG,  DT,  DC,  ALA, ARG, ASN, ASP, ASX,
@@ -66,6 +68,12 @@ To change this behavior, use the ```--ra``` flag to add residue names or the ```
 ```bash
 ./vdos example.pdb 2 --ra NA CL K BR --rs DC DT
 ```
+
+### Radii
+
+By default, vdos uses the file ```data/bondi_classifier.txt``` to associate radii to each atom. To change the radii, you can either edit ```data/bondi_classifier``` or you can change the b-factor in your input pdb to the radii. If you use the latter, you must pass the flag ```--radii_from_b```.
+
+### Output
 
 By default, a csv named volumes.csv is output to the current directory. The following flags can be used to change the output behavior:
 
@@ -86,9 +94,6 @@ By default, a csv named volumes.csv is output to the current directory. The foll
 - ```--verts```: output the vertices of the awVd to stdout in the format {a1, a2, a3, a4, x, y, z}
 - ```--mp```: write an OFF mesh for power cell of the molecular structure. Names follow the format power_[ATOM-NAME]_[ATOM-SERIAL#].off
 - ```--mv```: write an OFF mesh for additively weighted cell of the molecular structure. Names follow the format awVd_[ATOM-NAME]_[ATOM-SERIAL#].off
-
-
-The radii associated with each atom can be changed by editing ```data/bondi_classifier.txt```.
 
 ## Citations
 
