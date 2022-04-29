@@ -40,7 +40,8 @@ using namespace std;
 
 void
 store_voronoi_vertex (const Icosphere &ico, Voronoi_map &voronoi_vertices,
-                      const std::array<const Atom *, 4> &v, const Eigen::Vector3d &v_vert)
+                      const std::array<const Atom *, 4> &v,
+                      const Eigen::Vector3d &v_vert)
 {
   auto x = v_vert[0] * ico.radius () + ico.center ()[0];
   auto y = v_vert[1] * ico.radius () + ico.center ()[1];
@@ -149,7 +150,7 @@ get_t_if_exists (
           std::array<const Atom *, 4> v{ atoms[0], atoms[1], atoms[2],
                                          &ico.atom () };
           std::sort (v.begin (), v.end ());
-          store_voronoi_vertex (ico, voronoi_vertices, v, {v_x, v_y, v_z});
+          store_voronoi_vertex (ico, voronoi_vertices, v, { v_x, v_y, v_z });
           for (auto hat : ico.m.halfedges_around_target (h_edge))
             {
               connect_and_visit (hat, ico, evisited);
@@ -244,7 +245,7 @@ handle_voronoi_vertex (
   // Something is wrong. Just return and deal with it later.
   if (trys > 1000)
     {
-      // return ok;
+      return ok;
     }
 
   auto v_verts = compute_voronoi_vertex_rigorous (ico, atoms);
@@ -270,7 +271,6 @@ handle_voronoi_vertex (
               std::array<const Atom *, 4> v{ curve_colors[0], curve_colors[1],
                                              new_color, &ico.atom () };
               std::sort (v.begin (), v.end ());
-
 
               store_voronoi_vertex (ico, voronoi_vertices, v, v_vert);
 

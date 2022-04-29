@@ -36,7 +36,7 @@ CMAKE_CXX_FLAGS_RELWITHDEBUGINFO	CMakeLists.txt	/^set (CMAKE_CXX_FLAGS_RELWITHDE
 CMAKE_CXX_STANDARD	CMakeLists.txt	/^set (CMAKE_CXX_STANDARD 17)$/;"	v
 CMAKE_INSTALL_COMPONENT	cmake_install.cmake	/^    set(CMAKE_INSTALL_COMPONENT "${COMPONENT}")$/;"	v
 CMAKE_INSTALL_COMPONENT	cmake_install.cmake	/^    set(CMAKE_INSTALL_COMPONENT)$/;"	v
-CMAKE_INSTALL_CONFIG_NAME	cmake_install.cmake	/^    set(CMAKE_INSTALL_CONFIG_NAME "Debug")$/;"	v
+CMAKE_INSTALL_CONFIG_NAME	cmake_install.cmake	/^    set(CMAKE_INSTALL_CONFIG_NAME "Release")$/;"	v
 CMAKE_INSTALL_MANIFEST	cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")$/;"	v
 CMAKE_INSTALL_MANIFEST	cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")$/;"	v
 CMAKE_INSTALL_PREFIX	cmake_install.cmake	/^  set(CMAKE_INSTALL_PREFIX "\/usr\/local")$/;"	v
