@@ -17,6 +17,7 @@ find_neighbors (const Model &model, const Atom &atom,
                 const std::size_t subdivisions,
                 const boost::program_options::variables_map &vm,
                 const std::set<std::string> &residues,
-                Voronoi_map &voronoi_vertices);
+                Voronoi_map &voronoi_vertices,
+                const std::map<const Atom *, double> &radii_map);
 
 #endif

@@ -71,7 +71,11 @@ main (int argc, const char **argv)
       "include residues") (
       "rs", po::value<std::vector<std::string> > ()->multitoken (),
       "exclude residues") ("verts,v", po::bool_switch (),
-                           "output the voronoi vertices to stdout");
+                           "output the voronoi vertices to stdout") (
+      "cutoff", po::value<double> ()->default_value (2.8),
+      "how far away to consider atoms") (
+      "radii_from_b", po::bool_switch (),
+      "read atom radii from b factor in pdb");
 
   po::positional_options_description p;
   p.add ("input", 1);
@@ -230,14 +234,22 @@ main (int argc, const char **argv)
       // A map associating a quadruple of atoms with an empty sphere tangent to
       // all 4 atoms. Key: {cx, cy, cz, r}
       Voronoi_map voronoi_vertices;
+      std::map<const Atom *, double> radii_map;
 
+      for (Atom_Iter it = model.atoms_begin (); it != model.atoms_end (); ++it)
+        {
+          radii_map[&(*it)]
+              = vm["radii_from_b"].as<bool> ()
+                    ? it->temperature_factor ()
+                    : G_atom_classifier.get_properties (*it).value ();
+        }
       for (Atom_Iter it = model.atoms_begin (); it != model.atoms_end (); ++it)
         {
           std::array<double, 5> awVd_vol{ 0., 0., 0., 0., 0. };
           if (residues.find (it->residue_name ()) != residues.end ())
             {
               awVd_vol = find_neighbors (model, *(it), density, vm, residues,
-                                         voronoi_vertices);
+                                         voronoi_vertices, radii_map);
             }
           prop_map[&*it]["vv"] = awVd_vol[0];
           prop_map[&*it]["ov"] = awVd_vol[1];
@@ -248,7 +260,7 @@ main (int argc, const char **argv)
 
       Rt T;
 
-      power (model, T);
+      power (model, T, radii_map);
 
       for (Rt::Vertex_handle vh : T.finite_vertex_handles ())
         {
@@ -263,19 +275,19 @@ main (int argc, const char **argv)
           prop_map[vh->info ()]["ip"] = power_vol[3];
         }
 
-      outs["c"]
-          << "atom,awVd_volume,awVd_overlap_volume,awVd_surface_area,awVd_"
+      csv << "atom,awVd_volume,awVd_overlap_volume,awVd_surface_area,awVd_"
              "interfacial_surface_area,maximum_gaussian_curvature,power_"
              "volume,power_overlap_volume,power_surface_area,power_"
              "interfacial_surface_area,%diff_volume,%diff_overlap_"
              "volume,%diff_surface_area,%diff_interfacial_surface_area"
           << std::endl;
+
       for (auto &atom_prop : prop_map)
         {
           auto &prop = atom_prop.second;
           auto atom = *atom_prop.first;
           prop["vd"] = prop["vp"] != 0.
-                           ? ((prop["vv"] - prop["vp"]) / prop["vd"]) * 100.
+                           ? ((prop["vv"] - prop["vp"]) / prop["vp"]) * 100.
                            : 0.;
           prop["od"] = prop["op"] != 0.
                            ? ((prop["ov"] - prop["op"]) / prop["op"]) * 100.
@@ -286,8 +298,6 @@ main (int argc, const char **argv)
           prop["id"] = prop["ip"] != 0.
                            ? ((prop["iv"] - prop["ip"]) / prop["ip"]) * 100.
                            : 0.;
-          csv << atom.atom_name () << "_" << atom.residue_name () << "_"
-              << atom.atom_serial_number ();
           for (auto &elem : outs)
             {
               const auto &key = elem.first;
@@ -296,8 +306,22 @@ main (int argc, const char **argv)
                 {
                   outs[key] << atom << std::endl;
                 }
-              csv << "," << prop[key];
             }
+        }
+      for (auto &atom_props : prop_map)
+        {
+          auto &props = atom_props.second;
+          auto atom = *atom_props.first;
+
+          csv << atom.atom_name ().c_str () << "_"
+              << atom.atom_serial_number ();
+          for (const auto &prop_key :
+               { "vv", "ov", "av", "iv", "k", "vp", "op", "ap", "ip", "vd",
+                 "od", "ap", "ip" })
+            {
+              csv << "," << props[prop_key];
+            }
+          csv << std::endl;
         }
       if (vm["verts"].as<bool> ())
         {

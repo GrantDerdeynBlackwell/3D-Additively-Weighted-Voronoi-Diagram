@@ -1,3 +1,4 @@
+#include "icosphere.h"
 #include "typedefs.h"
 #include <CGAL/number_utils.h>
 #include <limits>
@@ -7,8 +8,8 @@ almost_equal (double x, double y, std::size_t ulp)
 {
   // the machine epsilon has to be scaled to the magnitude of the values used
   // and multiplied by the desired precision in ULPs (units in the last place)
-  return std::fabs (x - y)
-             <= std::numeric_limits<double>::epsilon () * std::fabs (x + y) * ulp
+  return std::fabs (x - y) <= std::numeric_limits<double>::epsilon ()
+                                  * std::fabs (x + y) * ulp
          // unless the result is subnormal
          || std::fabs (x - y) < std::numeric_limits<double>::min ();
 }
@@ -18,7 +19,7 @@ compute_scalar_dist_different_sizes (
     const Ray &ray, const std::pair<const Atom *const, Hyperbola> &hyperbola,
     const bool bigger)
 {
-  NT t = G_double_to_NT(std::numeric_limits<double>::max ());
+  NT t = G_double_to_NT (std::numeric_limits<double>::max ());
 
   // The icosphere has radius 1 already, so these don't need to be normalized
   const NT nx = ray[0];
@@ -62,7 +63,7 @@ compute_scalar_dist_different_sizes (
   const NT det = CGAL::square (b) - 4. * a * c;
 
   // Only change things if there is an intersection
-  if (almost_equal (det, 0.,100))
+  if (almost_equal (det, 0., 100))
     {
       NT t1 = -1. * b / (2. * a);
       return t1 > 0 ? t1 : t;
@@ -97,7 +98,7 @@ compute_scalar_dist_different_sizes (
         {
           if (t1 > 0. && t2 > 0.)
             {
-              t =CGAL::max (t1, t2);
+              t = CGAL::max (t1, t2);
             }
           else if (t1 > 0.)
             {
@@ -126,30 +127,30 @@ compute_scalar_dist_same_sizes (
   const NT I = hyperbola.second[8];
   const NT J = hyperbola.second[9];
 
-  NT t = -1. * J / ( nx * G + ny * H + nz * I );
+  NT t = -1. * J / (nx * G + ny * H + nz * I);
 
-  return t > 0. ? t : G_double_to_NT(std::numeric_limits<double>::max());
+  return t > 0. ? t : G_double_to_NT (std::numeric_limits<double>::max ());
 }
 
 std::pair<NT, const Atom *>
-compute_scalar_dist (const Ray &ray, const Hyperbola_map &h, const Atom &atom)
+compute_scalar_dist (const Ray &ray, const Icosphere &ico)
 {
-  NT t = G_double_to_NT(std::numeric_limits<double>::max ());
-  NT d_curr = CUTOFF + G_atom_classifier.get_properties(atom).value();
+  const auto &atom = ico.atom ();
+  const auto &h = ico.h ();
+  NT t = G_double_to_NT (std::numeric_limits<double>::max ());
+  NT d_curr = ico.cutoff () + ico.radii_map (&atom);
   const Atom *h_curr = nullptr;
 
   for (const auto &hyperbola : h)
     {
-      if (G_atom_classifier.get_properties (atom).value ()
-          == G_atom_classifier.get_properties (*hyperbola.first).value ())
+      if (ico.radii_map (&atom) == ico.radii_map (hyperbola.first))
         {
           t = compute_scalar_dist_same_sizes (ray, hyperbola);
         }
       else
         {
-          bool bigger = G_atom_classifier.get_properties (atom).value ()
-                        < G_atom_classifier.get_properties (*hyperbola.first)
-                              .value ();
+          bool bigger
+              = ico.radii_map (&atom) < ico.radii_map (hyperbola.first);
           t = compute_scalar_dist_different_sizes (ray, hyperbola, bigger);
         }
       // only keep this sheet if it is the closest yet encountered.
@@ -158,5 +159,5 @@ compute_scalar_dist (const Ray &ray, const Hyperbola_map &h, const Atom &atom)
       // only update the color if the distance was changed.
       h_curr = d_curr == t ? hyperbola.first : h_curr;
     }
-  return std::make_pair(d_curr, h_curr);
+  return std::make_pair (d_curr, h_curr);
 }

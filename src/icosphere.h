@@ -20,15 +20,19 @@ class Icosphere
   const std::size_t _subdivisions;
   const Hyperbola_map &_h;
   const Atom &_atom;
+  const double _cutoff;
+  const std::map<const Atom *, double> _radii_map;
 
 public:
   Mesh m;
 
   Icosphere (const Atom &atom, const std::size_t subdivisions,
-             const Hyperbola_map &h)
+             const Hyperbola_map &h, const double cutoff,
+             const std::map<const Atom *, double> &radii_map)
       : _center{ atom.x (), atom.y (), atom.z () },
         _radius (G_atom_classifier.get_properties (atom).value ()),
-        _subdivisions (subdivisions), _h (h), _atom (atom)
+        _subdivisions (subdivisions), _h (h), _atom (atom), _cutoff (cutoff),
+        _radii_map (radii_map)
   {
     m.reserve (20 * std::pow (4, subdivisions),
                40 * std::pow (4, subdivisions),
@@ -49,7 +53,6 @@ public:
     assert (vcreated);
 
     CGAL::make_icosahedron (m, K::Point_3 (0., 0., 0.));
-
 
     // clang-format off
     CGAL::Aff_transformation_3<K> rotx
@@ -79,9 +82,9 @@ public:
 
     // The mesh starts align to each axis. We give it a little nudge to prevent
     // annoying numerical errors.
-    CGAL::Polygon_mesh_processing::transform(rotx,m);
-    CGAL::Polygon_mesh_processing::transform(roty,m);
-    CGAL::Polygon_mesh_processing::transform(rotz,m);
+    CGAL::Polygon_mesh_processing::transform (rotx, m);
+    CGAL::Polygon_mesh_processing::transform (roty, m);
+    CGAL::Polygon_mesh_processing::transform (rotz, m);
 
     // Add the icosahedron to the mesh, coloring each vertex null for now
     // subdivide the mesh
@@ -120,6 +123,16 @@ public:
   subdivisions () const
   {
     return this->_subdivisions;
+  }
+  double
+  cutoff () const
+  {
+    return this->_cutoff;
+  }
+  double
+  radii_map (const Atom *atom) const
+  {
+    return this->_radii_map.at(atom);
   }
 };
 

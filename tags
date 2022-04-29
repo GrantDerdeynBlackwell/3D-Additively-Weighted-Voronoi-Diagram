@@ -43,7 +43,6 @@ CMAKE_INSTALL_PREFIX	cmake_install.cmake	/^  set(CMAKE_INSTALL_PREFIX "\/usr\/lo
 CMAKE_INSTALL_SO_NO_EXE	cmake_install.cmake	/^  set(CMAKE_INSTALL_SO_NO_EXE "1")$/;"	v
 CMAKE_OBJDUMP	cmake_install.cmake	/^  set(CMAKE_OBJDUMP "\/usr\/bin\/objdump")$/;"	v
 CMAKE_SOURCE_DIR	Makefile	/^CMAKE_SOURCE_DIR = \/home\/e5-2690\/builds\/Voronoi-Diagram-of-Spheres$/;"	m
-CUTOFF	src/typedefs.h	/^#define CUTOFF /;"	d
 Cb0	src/typedefs.h	/^using Cb0 = typename CGAL::Regular_triangulation_cell_base_3<EK>;$/;"	t	typeref:typename:CGAL::Regular_triangulation_cell_base_3<EK>
 Cell_handle	src/power.cpp	/^  typedef typename Triangulation_3::Cell_handle Cell_handle;$/;"	t	function:link_to_fg_with_color	typeref:typename:Triangulation_3::Cell_handle	file:
 Color	src/awVd_ray.cpp	/^typedef CGAL::IO::Color Color;$/;"	t	typeref:typename:CGAL::IO::Color	file:
@@ -102,7 +101,9 @@ Weighted_SpatialSortingTraits	src/power.cpp	/^struct Weighted_SpatialSortingTrai
 Weighted_point	src/typedefs.h	/^using Weighted_point = typename EK::Weighted_point_3;$/;"	t	typeref:typename:EK::Weighted_point_3
 _atom	src/icosphere.h	/^  const Atom &_atom;$/;"	m	class:Icosphere	typeref:typename:const Atom &
 _center	src/icosphere.h	/^  const K::Point_3 _center;$/;"	m	class:Icosphere	typeref:typename:const K::Point_3
+_cutoff	src/icosphere.h	/^  const double _cutoff;$/;"	m	class:Icosphere	typeref:typename:const double
 _h	src/icosphere.h	/^  const Hyperbola_map &_h;$/;"	m	class:Icosphere	typeref:typename:const Hyperbola_map &
+_radii_map	src/icosphere.h	/^  const std::map<const Atom *, double> _radii_map;$/;"	m	class:Icosphere	typeref:typename:const std::map<const Atom *,double>
 _radius	src/icosphere.h	/^  const NT _radius;$/;"	m	class:Icosphere	typeref:typename:const NT
 _subdivisions	src/icosphere.h	/^  const std::size_t _subdivisions;$/;"	m	class:Icosphere	typeref:typename:const std::size_t
 add_voronoi_curve	src/bfs_for_vert.cpp	/^add_voronoi_curve ($/;"	f	typeref:typename:void
@@ -118,11 +119,11 @@ clean	Makefile	/^clean:$/;"	t
 clean/fast	Makefile	/^clean\/fast: clean$/;"	t
 cmake_check_build_system	Makefile	/^cmake_check_build_system:$/;"	t
 cmake_force	Makefile	/^cmake_force:$/;"	t
-compute_bisector	src/compute_bisectors.cpp	/^compute_bisector (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
-compute_bisector_diff	src/compute_bisectors.cpp	/^compute_bisector_diff (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
-compute_bisector_same	src/compute_bisectors.cpp	/^compute_bisector_same (const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
+compute_bisector	src/compute_bisectors.cpp	/^compute_bisector (const Icosphere &ico, const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
+compute_bisector_diff	src/compute_bisectors.cpp	/^compute_bisector_diff (const Icosphere &ico, const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
+compute_bisector_same	src/compute_bisectors.cpp	/^compute_bisector_same (const Icosphere &ico, const Atom &atom, const Atom &it)$/;"	f	typeref:typename:Hyperbola const
 compute_curvature	src/awVd_ray.cpp	/^compute_curvature (const Hyperbola &h, const NT x, const NT y, const NT z)$/;"	f	typeref:typename:NT
-compute_scalar_dist	src/ray_intersections.cpp	/^compute_scalar_dist (const Ray &ray, const Hyperbola_map &h, const Atom &atom)$/;"	f	typeref:typename:std::pair<NT,const Atom * >
+compute_scalar_dist	src/ray_intersections.cpp	/^compute_scalar_dist (const Ray &ray, const Icosphere &ico)$/;"	f	typeref:typename:std::pair<NT,const Atom * >
 compute_scalar_dist_different_sizes	src/ray_intersections.cpp	/^compute_scalar_dist_different_sizes ($/;"	f	typeref:typename:double
 compute_scalar_dist_same_sizes	src/ray_intersections.cpp	/^compute_scalar_dist_same_sizes ($/;"	f	typeref:typename:NT
 compute_volume	src/awVd_ray.cpp	/^compute_volume (const Icosphere &ico, const std::set<std::string> &residues)$/;"	f	typeref:typename:std::array<double,5>
@@ -131,6 +132,7 @@ compute_voronoi_vertex_rigorous	src/voronoi_mesh_details.cpp	/^compute_voronoi_v
 compute_voronoi_vertices	src/awVd_ray.cpp	/^compute_voronoi_vertices (Icosphere &ico, Voronoi_map &voronoi_vertices)$/;"	f	typeref:typename:void
 connect	src/awVd_ray.cpp	/^connect (Mesh::Halfedge_index h, Icosphere &ico)$/;"	f	typeref:typename:void
 connect_and_visit	src/bfs_for_vert.cpp	/^connect_and_visit (Mesh::Halfedge_index h, Icosphere &ico,$/;"	f	typeref:typename:void
+cutoff	src/icosphere.h	/^  cutoff () const$/;"	f	class:Icosphere	typeref:typename:double
 default_target	Makefile	/^default_target: all$/;"	t
 depend	Makefile	/^depend:$/;"	t
 double_to_NT	src/typedefs.h	/^using double_to_NT = typename CGAL::NT_converter<double, NT>;$/;"	t	typeref:typename:CGAL::NT_converter<double,NT>
@@ -159,7 +161,7 @@ operator () 	src/power.cpp	/^  operator() (const Weighted_point &p, const Weight
 operator () 	src/power.cpp	/^  operator() (const Weighted_point &p, const Weighted_point &q) const$/;"	f	struct:WeightedLessY	typeref:typename:bool	file:
 operator () 	src/power.cpp	/^  operator() (const Weighted_point &p, const Weighted_point &q) const$/;"	f	struct:WeightedLessZ	typeref:typename:bool	file:
 operator <<	src/main.cpp	/^operator<< (std::ostream &os, const Atom &atm)$/;"	f	namespace:ESBTL	typeref:typename:std::ostream &
-power	src/power.cpp	/^power (const Model &model, Rt &T)$/;"	f	typeref:typename:void
+power	src/power.cpp	/^power (const Model &model, Rt &T,$/;"	f	typeref:typename:void
 preinstall	Makefile	/^preinstall: all$/;"	t
 preinstall/fast	Makefile	/^preinstall\/fast:$/;"	t
 qrc_CGAL.cpp.i	Makefile	/^qrc_CGAL.cpp.i:$/;"	t
@@ -186,6 +188,7 @@ qrc_Triangulation_2.cpp.s	Makefile	/^qrc_Triangulation_2.cpp.s:$/;"	t
 qrc_Triangulation_2.i	Makefile	/^qrc_Triangulation_2.i: qrc_Triangulation_2.cpp.i$/;"	t
 qrc_Triangulation_2.o	Makefile	/^qrc_Triangulation_2.o: qrc_Triangulation_2.cpp.o$/;"	t
 qrc_Triangulation_2.s	Makefile	/^qrc_Triangulation_2.s: qrc_Triangulation_2.cpp.s$/;"	t
+radii_map	src/icosphere.h	/^  radii_map (const Atom *atom) const$/;"	f	class:Icosphere	typeref:typename:double
 radius	src/icosphere.h	/^  radius () const$/;"	f	class:Icosphere	typeref:typename:double
 rebuild_cache	Makefile	/^rebuild_cache:$/;"	t
 rebuild_cache/fast	Makefile	/^rebuild_cache\/fast: rebuild_cache$/;"	t

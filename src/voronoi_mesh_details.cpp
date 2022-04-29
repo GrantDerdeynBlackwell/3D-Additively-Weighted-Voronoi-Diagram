@@ -159,19 +159,19 @@ compute_voronoi_vertex_rigorous (const Icosphere &ico,
   NT y2 = (atom2->y () - y1) / r1;
   NT z2 = (atom2->z () - z1) / r1;
 
-  NT r2 = G_atom_classifier.get_properties (*atom2).value () / r1;
+  NT r2 = ico.radii_map (atom2) / r1;
 
   auto atom3 = atoms[1];
   NT x3 = (atom3->x () - x1) / r1;
   NT y3 = (atom3->y () - y1) / r1;
   NT z3 = (atom3->z () - z1) / r1;
-  NT r3 = G_atom_classifier.get_properties (*atom3).value () / r1;
+  NT r3 = ico.radii_map (atom3) / r1;
 
   auto atom4 = atoms[2];
   NT x4 = (atom4->x () - x1) / r1;
   NT y4 = (atom4->y () - y1) / r1;
   NT z4 = (atom4->z () - z1) / r1;
-  NT r4 = G_atom_classifier.get_properties (*atom4).value () / r1;
+  NT r4 = ico.radii_map(atom4) / r1;
 
   NT a1 = 2. * x2;
   NT b1 = 2. * y2;
@@ -367,12 +367,12 @@ find_voronoi_curves_along_mesh_edge (
   NT x2 = (atom1->x () - x1) / r1;
   NT y2 = (atom1->y () - y1) / r1;
   NT z2 = (atom1->z () - z1) / r1;
-  NT r2 = G_atom_classifier.get_properties (*atom1).value () / r1;
+  NT r2 = ico.radii_map (atom1) / r1;
 
   NT x3 = (atom2->x () - x1) / r1;
   NT y3 = (atom2->y () - y1) / r1;
   NT z3 = (atom2->z () - z1) / r1;
-  NT r3 = G_atom_classifier.get_properties (*atom2).value () / r1;
+  NT r3 = ico.radii_map (atom2) / r1;
 
   NT a1 = (NT)2. * x2;
   NT b1 = (NT)2. * y2;

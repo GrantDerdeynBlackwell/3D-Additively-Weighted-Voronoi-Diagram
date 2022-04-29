@@ -195,16 +195,16 @@ mesh (const SubTri &T, const std::string &fname, const Atom *atom)
 }
 
 void
-power (const Model &model, Rt &T)
+power (const Model &model, Rt &T,
+       const std::map<const Atom *, double> &radii_map)
 {
   std::vector<std::pair<Weighted_point, Atom *> > points;
   for (Atom_Const_Iter it = model.atoms_begin (); it != model.atoms_end ();
        ++it)
     {
       points.push_back (std::make_pair (
-          Weighted_point (
-              EK::Point_3{ it->x (), it->y (), it->z () },
-              std::pow (G_atom_classifier.get_properties (*it).value (), 2)),
+          Weighted_point (EK::Point_3{ it->x (), it->y (), it->z () },
+                          std::pow (radii_map.at (&*it), 2)),
           (Atom *)&*it));
     }
   T.insert (points.begin (), points.end ());
@@ -235,10 +235,10 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T,
                                           cell->vertex (3)->info () };
 
       std::sort (colors.begin (), colors.end ());
-      if(!T.is_infinite(cell))
-      {
-      poly_points.push_back ({ { T.dual (cell), 1. }, colors });
-      }
+      if (!T.is_infinite (cell))
+        {
+          poly_points.push_back ({ { T.dual (cell), 1. }, colors });
+        }
     }
   SubTri subtri{ poly_points.begin (), poly_points.end () };
 

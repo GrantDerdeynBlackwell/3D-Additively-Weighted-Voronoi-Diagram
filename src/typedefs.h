@@ -51,8 +51,6 @@
 #include <boost/program_options/positional_options.hpp>
 #include <boost/program_options/value_semantic.hpp>
 
-#define CUTOFF 2.8
-
 // awVd typedefs
 // using NT = typename CGAL::MP_Float;
 using NT = double;

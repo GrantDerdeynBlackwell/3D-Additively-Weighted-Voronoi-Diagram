@@ -1,18 +1,19 @@
 #include "typedefs.h"
+#include "icosphere.h"
 
 inline Hyperbola const
-compute_bisector_same (const Atom &atom, const Atom &it)
+compute_bisector_same (const Icosphere &ico, const Atom &atom, const Atom &it)
 {
 
   // The coordinate system is scaled and translated such that the base atom is
   // at (0,0,0) and has radius 1. This cancels some of the terms in the full
   // equation for the quadric
   double x2 = (atom.x () - it.x ())
-              / G_atom_classifier.get_properties (atom).value ();
+              / ico.radii_map (&atom);
   double y2 = (atom.y () - it.y ())
-              / G_atom_classifier.get_properties (atom).value ();
+              / ico.radii_map (&atom);
   double z2 = (atom.z () - it.z ())
-              / G_atom_classifier.get_properties (atom).value ();
+              / ico.radii_map (&atom);
 
   // Parameters for quadric. These are from
   //
@@ -33,22 +34,22 @@ compute_bisector_same (const Atom &atom, const Atom &it)
 }
 
 inline Hyperbola const
-compute_bisector_diff (const Atom &atom, const Atom &it)
+compute_bisector_diff (const Icosphere &ico, const Atom &atom, const Atom &it)
 {
 
   // The coordinate system is scaled and translated such that the base atom is
   // at (0,0,0) and has radius 1. This cancels some of the terms in the full
   // equation for the quadric
   double x2 = (atom.x () - it.x ())
-              / G_atom_classifier.get_properties (atom).value ();
+              / ico.radii_map (&atom);
   double y2 = (atom.y () - it.y ())
-              / G_atom_classifier.get_properties (atom).value ();
+              / ico.radii_map (&atom);
   double z2 = (atom.z () - it.z ())
-              / G_atom_classifier.get_properties (atom).value ();
+              / ico.radii_map (&atom);
 
-  double r = (G_atom_classifier.get_properties (atom).value ()
-              - G_atom_classifier.get_properties (it).value ())
-             / G_atom_classifier.get_properties (atom).value ();
+  double r = (ico.radii_map (&atom)
+              - ico.radii_map (&it))
+             / ico.radii_map (&atom);
 
   // Helper variable for quadric
   double K = std::pow (x2, 2) + std::pow (y2, 2) + std::pow (z2, 2)
@@ -84,10 +85,10 @@ compute_bisector_diff (const Atom &atom, const Atom &it)
 }
 
 Hyperbola const
-compute_bisector (const Atom &atom, const Atom &it)
+compute_bisector (const Icosphere &ico, const Atom &atom, const Atom &it)
 {
-  return G_atom_classifier.get_properties (atom).value ()
-                 == G_atom_classifier.get_properties (it).value ()
-             ? compute_bisector_same (atom, it)
-             : compute_bisector_diff (atom, it);
+  return ico.radii_map (&atom)
+                 == ico.radii_map (&it)
+             ? compute_bisector_same (ico, atom, it)
+             : compute_bisector_diff (ico, atom, it);
 }

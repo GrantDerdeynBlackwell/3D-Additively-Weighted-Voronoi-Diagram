@@ -3,7 +3,8 @@
 #include "typedefs.h"
 #include <boost/program_options/variables_map.hpp>
 
-void power (const Model &model, Rt &T);
+void power (const Model &model, Rt &T,
+            const std::map<const Atom *, double> &radii_map);
 
 std::array<double, 4>
 subdivide (const Rt::Vertex_handle &vh, const Rt &T,

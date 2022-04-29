@@ -186,7 +186,7 @@ get_t_if_exists (
           return { 0., nullptr };
         }
       return compute_scalar_dist (Ray{ v_normal[0], v_normal[1], v_normal[2] },
-                                  ico.h (), ico.atom ());
+                                  ico);
     }
   return { 0., nullptr };
 }
@@ -393,7 +393,7 @@ trace_out_edge (
               auto vci_norm
                   = Ray{ v_curve_int[0], v_curve_int[1], v_curve_int[2] }
                         .normalized ();
-              t = compute_scalar_dist (vci_norm, ico.h (), ico.atom ());
+              t = compute_scalar_dist (vci_norm, ico);
 
               // If this curve is covered by another face, then that means
               // the vertex must lie in this triangle.
@@ -497,7 +497,7 @@ bfs_for_vert (
               auto int_norm
                   = Ray{ v_curve_int[0], v_curve_int[1], v_curve_int[2] }
                         .normalized ();
-              auto t = compute_scalar_dist (int_norm, ico.h (), ico.atom ());
+              auto t = compute_scalar_dist (int_norm, ico);
 
               auto nh = CGAL::Euler::split_edge (ico.m.halfedge (s, 0), ico.m);
               // Check that the edge does not miss another face

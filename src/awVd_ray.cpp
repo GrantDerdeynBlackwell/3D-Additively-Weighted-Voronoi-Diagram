@@ -227,7 +227,7 @@ compute_voronoi_faces (Icosphere &icosphere)
     {
       Ray ray{ icosphere.m.point (vertex)[0], icosphere.m.point (vertex)[1],
                icosphere.m.point (vertex)[2] };
-      auto t = compute_scalar_dist (ray, icosphere.h (), icosphere.atom ());
+      auto t = compute_scalar_dist (ray, icosphere);
       // Because the icosphere has already been made, just update the
       // coordinates of the vertex and the mesh will stay valid.
 
@@ -302,7 +302,7 @@ compute_voronoi_vertices (Icosphere &ico, Voronoi_map &voronoi_vertices)
 
               midpoint.normalize ();
 
-              auto t = compute_scalar_dist (midpoint, ico.h (), ico.atom ());
+              auto t = compute_scalar_dist (midpoint, ico);
               ico.m.point (ico.m.target (nh))
                   = K::Point_3{ midpoint[0] * t.first, midpoint[1] * t.first,
                                 midpoint[2] * t.first };
@@ -387,10 +387,13 @@ std::array<double, 5>
 find_neighbors (const Model &model, const Atom &atom,
                 const std::size_t subdivisions, const po::variables_map &vm,
                 const std::set<std::string> &residues,
-                Voronoi_map &voronoi_vertices)
+                Voronoi_map &voronoi_vertices,
+                const std::map<const Atom *, double> &radii_map)
 {
   Hyperbola_map h;
-  double r = G_atom_classifier.get_properties (atom).value ();
+  double r = radii_map.at(&atom);
+  Icosphere ico{ atom, subdivisions, h, vm["cutoff"].as<double> (),
+                 radii_map };
   for (Atom_Const_Iter it = model.atoms_begin (); it != model.atoms_end ();
        ++it)
     {
@@ -399,16 +402,15 @@ find_neighbors (const Model &model, const Atom &atom,
       if (std::sqrt (std::pow ((it->x () - atom.x ()), 2)
                      + std::pow ((it->y () - atom.y ()), 2)
                      + std::pow ((it->z () - atom.z ()), 2))
-                  - r - G_atom_classifier.get_properties (*it).value ()
-              < 2. * CUTOFF
+                  - r - radii_map.at (&*it)
+              < vm["cutoff"].as<double> ()
           && it->atom_serial_number () != atom.atom_serial_number ())
         {
-          Hyperbola hyp = compute_bisector (atom, *it);
+          Hyperbola hyp = compute_bisector (ico, atom, *it);
           h.insert ({ (const Atom *const) & *it, hyp });
         }
     }
 
-  Icosphere ico{ atom, subdivisions, h };
   // printf ("computing faces...\n");
   compute_voronoi_faces (ico);
   // mesh (ico);
