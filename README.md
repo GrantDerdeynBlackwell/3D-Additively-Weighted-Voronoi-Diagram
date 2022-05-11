@@ -3,10 +3,7 @@ A c++ algorithm to compute the Voronoi diagram of spheres from a molecular struc
 
 The Voronoi diagram of spheres (sometimes called the additively weighted Voronoi diagram, the Voronoi diagram of balls, or the Apollonius diagram) partitions space around a set of spheres into cells such that each cell contains all the space closer to the surface of a given sphere than any other sphere. It has been postulated that this diagram is better suited to analyze molecular structures than the power diagram. This algorithm is based on the algorithm presented in [[1]](https://doi.org/10.1080/16864360.2016.1273576) and [[2]](https://doi.org/10.1016/j.cag.2019.06.007), though many parts have been adapted or implemented differently.
 
-![awVd_vs_power](https://user-images.githubusercontent.com/104375042/165127476-7d4d1a81-c8b4-427e-8fa5-846fa985b8f3.svg)
-
-
-
+![A diagram illustrating the difference between a power cell and an additively weighted cell](/3D-Additively-Weighted-Voronoi-Diagram/images/power_vs_voronoi.svg?raw=true "Power cell vs additively weighted cell")
 
 
 ## Prereqiuisites
@@ -94,6 +91,12 @@ By default, a csv named volumes.csv is output to the current directory. The foll
 - ```--verts```: output the vertices of the awVd to stdout in the format {a1, a2, a3, a4, x, y, z}
 - ```--mp```: write an OFF mesh for power cell of the molecular structure. Names follow the format power_[ATOM-NAME]_[ATOM-SERIAL#].off
 - ```--mv```: write an OFF mesh for additively weighted cell of the molecular structure. Names follow the format awVd_[ATOM-NAME]_[ATOM-SERIAL#].off
+
+## Examples
+
+![Some representative cells of atoms. Faces are colored randomly for clarity.](/3D-Additively-Weighted-Voronoi-Diagram/images/cell_picutres.jpeg?raw=true "Representative additively weighted cells")
+
+![The additively weighted Voronoi shell of 1BNA. Faces are colored by the element which the face contacts.](/3D-Additively-Weighted-Voronoi-Diagram/images/DNA_example.jpeg?raw=true "The additively weighted Voronoi shell of 1BNA")
 
 ## Citations
 
