@@ -94,13 +94,13 @@ By default, a csv named volumes.csv is output to the current directory. The foll
 
 ## Examples
 
-![Some representative cells of atoms. Faces are colored randomly for clarity.](./images/cell_picutres.jpeg?raw=true "Representative additively weighted cells")
+| ![Some representative cells of atoms. Faces are colored randomly for clarity.](./images/cell_picutres.jpeg?raw=true "Representative additively weighted cells") |
+|:--:| 
+| *Additively weighted Voronoi cells of individul atoms. Top to bottom: hydrogen, carbon, nitrogen, oxygen, phosphorus. Left to right: Atoms contributing to the cell, atoms and the cell, atoms with radii reduced by a constant factor, additively weighted Voronoi cell.* |
 
-Additively weighted Voronoi cells of individul atoms. Top to bottom: hydrogen, carbon, nitrogen, oxygen, phosphorus. Left to right: Atoms contributing to the cell, atoms and the cell, atoms with radii reduced by a constant factor, additively weighted Voronoi cell.
-
-![The additively weighted Voronoi shell of 1BNA. Faces are colored by the element which the face contacts.](./images/DNA_example.jpeg?raw=true "The additively weighted Voronoi shell of 1BNA")
-
-Additively weighted Voronoi cells of 1BNA atoms. Left: Cartton of DNA structure. Waters are represented as bent lines. Middle-top: Atomic sphere representation of DNA. Middle-bottom: Additively weighted Voronoi diagram of DNA. Right-top: Atomic sphere representation of DNA. Waters are represented as translucent spheres. Right-bottom: Additively weighted Voronoi diagram of DNA with waters as translucent spheres.
+| ![The additively weighted Voronoi shell of 1BNA. Faces are colored by the element which the face contacts.](./images/DNA_example.jpeg?raw=true "The additively weighted Voronoi shell of 1BNA") |
+|:--:| 
+| *Additively weighted Voronoi cells of 1BNA atoms. Left: Cartoon of DNA structure. Waters are represented as bent lines. Middle-top: Atomic sphere representation of DNA. Middle-bottom: Additively weighted Voronoi diagram of DNA. Right-top: Atomic sphere representation of DNA. Waters are represented as translucent spheres. Right-bottom: Additively weighted Voronoi diagram of DNA with waters as translucent spheres.* |
 
 ## Citations
 
