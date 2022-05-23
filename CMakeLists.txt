@@ -7,7 +7,7 @@ set (CMAKE_CXX_FLAGS_RELWITHDEBUGINFO "-g -O3")
 set (CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 # set the project name
-project(awVd_ray LANGUAGES CXX CUDA)
+project(awVd_ray LANGUAGES CXX)
 
 # boost program_options uses std11 strings
 add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
@@ -28,17 +28,6 @@ if ( NOT Boost_FOUND )
   return()
 
 endif()
-
-#add_library(awVd_ray SHARED
-#            awVd_ray.cpp
-#            compute_bisectors.cpp
-#            ray_intersections.cpp
-#            voronoi_mesh_details.cpp)
-
-#target_compile_features(awVd_ray PUBLIC cxx_std_17)
-
-#set_target_properties(awVd_ray PROPERTIES
-#                            CUDA_SEPARABLE_COMPILATION ON)
 
 # include for local directory
 
