@@ -17,9 +17,7 @@ find_package( Boost COMPONENTS program_options REQUIRED)
 find_package( Eigen3 3.3 REQUIRED NO_MODULE)
 
 # CGAL and its components
-find_package( CGAL QUIET COMPONENTS Qt5 )
-
-add_definitions(-DCGAL_USE_BASIC_VIEWER)
+find_package( CGAL QUIET)
 
 if ( NOT Boost_FOUND )
 
@@ -32,7 +30,8 @@ endif()
 # include for local directory
 
 # include for local package
-include_directories(/home/e5-2690/builds/ESBTL-1.0-beta01/include)
+include_directories(/home/grant/Builds/ESBTL/ESBTL-1.0-beta01/include)
+include_directories(/home/grant/Builds/overlap)
 
 # add the executable
 add_executable(vdos

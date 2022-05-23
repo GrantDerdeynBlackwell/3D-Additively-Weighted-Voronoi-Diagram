@@ -37,7 +37,7 @@
 #include <string>
 #include <vector>
 
-#include "/home/e5-2690/builds/overlap/overlap.hpp"
+#include "overlap.hpp"
 #include "ESBTL/occupancy_handlers.h"
 #include "typedefs.h"
 

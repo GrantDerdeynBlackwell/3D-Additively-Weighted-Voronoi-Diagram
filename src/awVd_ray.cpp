@@ -6,7 +6,7 @@
 #include "typedefs.h"
 #include "voronoi_mesh_details.h"
 
-#include "/home/e5-2690/builds/overlap/overlap.hpp"
+#include "overlap.hpp"
 
 #include <CGAL/Aff_transformation_3.h>
 #include <CGAL/Intersections_2/Ray_2_Segment_2.h>

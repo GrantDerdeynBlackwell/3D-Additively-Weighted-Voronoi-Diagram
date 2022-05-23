@@ -9,6 +9,9 @@ Makefile
 tags
 CMakeCache.txt
 .clang-format
+icons
+resources
+*.qrc
 *.ipynb
 *.html
 *.json

@@ -12,7 +12,8 @@
 #include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
 #include <CGAL/Ray_3.h>
 #include <CGAL/Triangle_3.h>
-#include <CGAL/Triangulation_2_projection_traits_3.h>
+//#include <CGAL/Triangulation_2_projection_traits_3.h>
+#include <CGAL/Projection_traits_3.h>
 #include <CGAL/Vector_3.h>
 #include <CGAL/aff_transformation_tags.h>
 #include <CGAL/boost/graph/Euler_operations.h>
@@ -21,7 +22,7 @@
 #include <CGAL/boost/graph/iterator.h>
 #include <CGAL/centroid.h>
 #include <CGAL/number_utils_classes.h>
-#include <CGAL/squared_distance_2_1.h>
+//#include <CGAL/squared_distance_2_1.h>
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/VectorBlock.h>
 #include <algorithm>
