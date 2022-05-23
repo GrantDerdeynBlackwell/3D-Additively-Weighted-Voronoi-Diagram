@@ -44,8 +44,6 @@ endif()
 
 # include for local package
 include_directories(/home/e5-2690/builds/ESBTL-1.0-beta01/include)
-include_directories(/home/e5-2690/builds/eigen-3.3.9/include)
-include_directories(/home/e5-2690/builds/CGAL-5.3/include)
 
 # add the executable
 add_executable(vdos
