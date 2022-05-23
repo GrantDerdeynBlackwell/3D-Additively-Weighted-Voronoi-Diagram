@@ -23,7 +23,9 @@ Collect the dependencies and add them to your CMakeLists.txt. CGAL, Eigen, and b
 - ESBTL: http://esbtl.sourceforge.net/
 - overlap: https://github.com/severinstrobl/overlap
 
-Clone this repository. First, generate a makefile with cmake. If there are errors, it is sometimes useful to use cmake-gui.
+Clone this repository. First, generate a makefile with cmake. If there are errors, it is sometimes useful to use cmake-gui. Most of the dependencies can be automatically found with `cmake` or at worst by passing the appropriate include directory to `cmake-gui`. However, you must explicitly add the ESBTL include directory to `CMakeLists.txt`.
+
+Once you have collected all the dependencies and added them to CMake:
 
 ```bash
 cmake .
