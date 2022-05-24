@@ -30,8 +30,8 @@ endif()
 # include for local directory
 
 # include for local package
-include_directories(/home/grant/Builds/ESBTL/ESBTL-1.0-beta01/include)
-include_directories(/home/grant/Builds/overlap)
+include_directories(../ESBTL-1.0-beta01/include)
+include_directories(../overlap)
 
 # add the executable
 add_executable(vdos
