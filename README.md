@@ -16,6 +16,7 @@ The Voronoi diagram of spheres (sometimes called the additively weighted Voronoi
 
 ## Installation
 
+### Distro specific installation
 Copy and paste the following into a terminal to easily collect each dependency and compile.
 
 <details>
