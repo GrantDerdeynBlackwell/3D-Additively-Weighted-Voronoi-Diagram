@@ -16,6 +16,25 @@ The Voronoi diagram of spheres (sometimes called the additively weighted Voronoi
 
 ## Installation
 
+Copy and paste the following into a terminal to easily collect each dependency and compile.
+
+<details>
+  <summary>Ubuntu</summary>
+  
+  ```bash
+ sudo apt install libeigen3-dev libcgal-dev libboost-all-dev
+ git clone https://github.com/severinstrobl/overlap.git
+ wget https://versaweb.dl.sourceforge.net/project/esbtl/ESBTL-1.0-beta01.tar.bz2
+ tar -xvf ESBTL-1.0-beta01.tar.bz2
+ git clone https://github.com/GrantDerdeynBlackwell/3D-Additively-Weighted-Voronoi-Diagram.git
+ cd 3D-Additively-Weighted-Voronoi-Diagram
+ cmake -DCMAKE_BUILD_TYPE="Release" .
+ make
+ ```
+</details>
+
+### Manual Installation
+
 Collect the dependencies and add them to your CMakeLists.txt. CGAL, Eigen, and boost may be available from your distribution's package manager. An example CmakeLists.txt is included in this repository.
 - CGAL: https://www.cgal.org/download.html
 - Eigen: https://eigen.tuxfamily.org/index.php?title=Main_Page
@@ -41,7 +60,7 @@ Compile with a C++14 compatible compiler such as GCC or Clang.
 ```bash
 make
 ```
-
+    
 ## Usage
 
 ```bash
