@@ -23,8 +23,10 @@ Copy and paste the following into a terminal to easily collect each dependency a
   <summary>Ubuntu</summary>
   
   ```bash
- sudo apt install libeigen3-dev libcgal-dev libboost-all-dev
+ sudo apt install libeigen3-dev libboost-all-dev
  git clone https://github.com/severinstrobl/overlap.git
+ wget https://github.com/CGAL/cgal/archive/refs/tags/v5.4.tar.gz
+ tar -xvf v5.4.tar.gz
  wget https://versaweb.dl.sourceforge.net/project/esbtl/ESBTL-1.0-beta01.tar.bz2
  tar -xvf ESBTL-1.0-beta01.tar.bz2
  git clone https://github.com/GrantDerdeynBlackwell/3D-Additively-Weighted-Voronoi-Diagram.git
