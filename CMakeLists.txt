@@ -16,6 +16,9 @@ find_package( Boost COMPONENTS program_options REQUIRED)
 
 find_package( Eigen3 3.3 REQUIRED NO_MODULE)
 
+# CGAL and its components
+find_package( CGAL QUIET)
+
 if ( NOT Boost_FOUND )
 
   message(STATUS "This project requires the Boost library, and will not be compiled.")
@@ -29,7 +32,6 @@ endif()
 # include for local package
 include_directories(../ESBTL-1.0-beta01/include)
 include_directories(../overlap)
-include_directories(../cgal-5.4/CGAL_Core/include)
 
 # add the executable
 add_executable(vdos
