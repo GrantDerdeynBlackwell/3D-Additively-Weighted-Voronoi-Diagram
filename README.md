@@ -31,7 +31,7 @@ Copy and paste the following into a terminal to easily collect each dependency a
  tar -xvf ESBTL-1.0-beta01.tar.bz2
  git clone https://github.com/GrantDerdeynBlackwell/3D-Additively-Weighted-Voronoi-Diagram.git
  cd 3D-Additively-Weighted-Voronoi-Diagram
- cmake -DCMAKE_BUILD_TYPE="Release" .
+ cmake -DCGAL_DIR="../cgal-5.4" -DCMAKE_BUILD_TYPE="Release" .
  make
  ```
 </details>
