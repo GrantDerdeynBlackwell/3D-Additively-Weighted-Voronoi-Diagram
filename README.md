@@ -29,8 +29,7 @@ Copy and paste the following into a terminal to easily collect each dependency a
  tar -xvf v5.4.tar.gz
  wget https://versaweb.dl.sourceforge.net/project/esbtl/ESBTL-1.0-beta01.tar.bz2
  tar -xvf ESBTL-1.0-beta01.tar.bz2
- git clone https://github.com/GrantDerdeynBlackwell/3D-Additively-Weighted-Voronoi-Diagram.git
- cd 3D-Additively-Weighted-Voronoi-Diagram
+ git clone https://github.com/GrantDerdeynBlackwell/3D-Additively-Weighted-Voronoi-Diagram.git && cd 3D-Additively-Weighted-Voronoi-Diagram
  cmake -DCGAL_DIR="../cgal-5.4" -DCMAKE_BUILD_TYPE="Release" .
  make
  ```
