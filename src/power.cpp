@@ -174,7 +174,11 @@ link_to_fg_with_color (const Triangulation_3 &t,
             }
 
           intersect.erase (atom);
-          assert (!intersect.empty ());
+
+	  if(intersect.empty ())
+	  {
+	    throw std::runtime_error("This input has one or more unbounded power cells. It is not currently possible to mesh unbounded power cells.");
+	  }
           auto color = G_cmap.find ((*intersect.cbegin ())->element ());
           auto new_face = CGAL::Euler::add_face (face, fg);
           put (fcolor, new_face,
