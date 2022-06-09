@@ -110,8 +110,8 @@ By default, a csv named volumes.csv is output to the current directory. The foll
 - ```-k ```: output a pdb where the temperature factor of each atom is the maximum Gaussian curvature of the surface of its additively weighted cell. Default: max_curvature.pdb
 - ```-c ```: change the name of the .csv
 - ```--verts```: output the vertices of the awVd to stdout in the format {a1, a2, a3, a4, x, y, z}
-- ```--mp```: write an OFF mesh for power cell of the molecular structure. Names follow the format power_[ATOM-NAME]_[ATOM-SERIAL#].off
-- ```--mv```: write an OFF mesh for additively weighted cell of the molecular structure. Names follow the format awVd_[ATOM-NAME]_[ATOM-SERIAL#].off
+- ```--mp```: write an OFF mesh for power cell of the molecular structure to a directory (the current directory by default). Names follow the format power_[ATOM-NAME]_[ATOM-SERIAL#].off
+- ```--mv```: write an OFF mesh for additively weighted cell of the molecular structure to a directory (the current directory by default). Names follow the format awVd_[ATOM-NAME]_[ATOM-SERIAL#].off
 
 ## Examples
 

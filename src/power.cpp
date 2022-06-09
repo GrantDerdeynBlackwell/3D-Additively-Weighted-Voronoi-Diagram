@@ -326,7 +326,7 @@ subdivide (const Rt::Vertex_handle &vh, const Rt &T,
     }
   if (vm.count ("mp"))
     {
-      std::string fname{ "outputs/power_" + vh->info ()->atom_name () + "_"
+      std::string fname{ vm["mp"].as<std::string>() + "/power_" + vh->info ()->atom_name () + "_"
                          + std::to_string (vh->info ()->atom_serial_number ())
                          + ".off" };
       mesh (subtri, fname, vh->info ());

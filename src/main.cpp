@@ -64,9 +64,9 @@ main (int argc, const char **argv)
       "k", po::value<std::string> ()->implicit_value (""),
       "output maximum Gaussian curvature of each cell to pdb") (
       "c", po::value<std::string> (),
-      "name of csv") ("mp", po::value<bool> (),
-                      "write a COFF mesh for each power diagram cell") (
-      "mv", po::value<bool> (), "write a COFF mesh for each awVd cell") (
+      "name of csv") ("mp", po::value<std::string> ()->implicit_value ("."),
+                      "write a COFF mesh for each power diagram cell to this directory") (
+      "mv", po::value<std::string> ()->implicit_value ("."), "write a COFF mesh for each awVd cell to this directory") (
       "ra", po::value<std::vector<std::string> > ()->multitoken (),
       "include residues") (
       "rs", po::value<std::vector<std::string> > ()->multitoken (),

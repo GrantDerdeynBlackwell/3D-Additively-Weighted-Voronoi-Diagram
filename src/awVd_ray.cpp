@@ -423,7 +423,7 @@ find_neighbors (const Model &model, const Atom &atom,
 
   if (vm.count ("mv"))
     {
-      mesh_io_test (ico, "outputs/awVd_" + atom.atom_name () + "_"
+      mesh_io_test (ico, vm["mv"].as<std::string> () + "/awVd_" + atom.atom_name () + "_"
                              + std::to_string (atom.atom_serial_number ())
                              + ".off");
     }
