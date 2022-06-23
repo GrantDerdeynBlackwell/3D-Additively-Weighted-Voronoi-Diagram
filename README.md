@@ -113,6 +113,8 @@ By default, a csv named volumes.csv is output to the current directory. The foll
 - ```--mp```: write an OFF mesh for power cell of the molecular structure to a directory (the current directory by default). Names follow the format power_[ATOM-NAME]_[ATOM-SERIAL#].off
 - ```--mv```: write an OFF mesh for additively weighted cell of the molecular structure to a directory (the current directory by default). Names follow the format awVd_[ATOM-NAME]_[ATOM-SERIAL#].off
 
+##### Note, in order to render the meshes in pymol, you must convert them first to a pymol-friendly OFF format by running ```cleanup_meshes.sh```
+
 ## Examples
 
 | ![Some representative cells of atoms. Faces are colored randomly for clarity.](./images/cell_picutres.jpeg?raw=true "Representative additively weighted cells") |
