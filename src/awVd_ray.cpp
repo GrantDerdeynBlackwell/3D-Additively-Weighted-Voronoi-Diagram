@@ -106,7 +106,7 @@ compute_volume (const Icosphere &ico, const std::set<std::string> &residues)
                 }
               for (const auto atom : vatom.first[v])
                 {
-                  new_K = 
+                  float new_K = 
                       compute_curvature (
                           ico.h ().at ((const Atom *const)atom),
                           ico.m.point (v).x (), ico.m.point (v).y (),
