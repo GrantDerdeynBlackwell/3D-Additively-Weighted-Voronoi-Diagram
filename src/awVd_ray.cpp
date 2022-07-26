@@ -106,12 +106,12 @@ compute_volume (const Icosphere &ico, const std::set<std::string> &residues)
                 }
               for (const auto atom : vatom.first[v])
                 {
-                  max_K = std::max (
-                      std::fabs (compute_curvature (
+                  new_K = 
+                      compute_curvature (
                           ico.h ().at ((const Atom *const)atom),
                           ico.m.point (v).x (), ico.m.point (v).y (),
-                          ico.m.point (v).z ())),
-                      max_K);
+                          ico.m.point (v).z ());
+                  max_K = std::fabs(new_K) > max_K ? new_K : max_K;
                 }
             }
         }
